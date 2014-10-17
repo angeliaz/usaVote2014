@@ -1,0 +1,132 @@
+.top{ border-top:2px solid #2f2e33; height:176px;}
+.col{ width:1000px; margin:0 auto;}	
+.bg01{ height:176px; background:url(http://y1.ifengimg.com/vote/usa2012/bg01.gif); position: relative;}
+.box01{ position:absolute; width:150px; left:108px; top:48px; color:#3b5796; font-family:Arial, Helvetica, sans-serif; z-index:200;}
+.box02{ position:absolute; width:150px; right:108px; top:48px; color:#3b5796; font-family:Arial, Helvetica, sans-serif; z-index:200;}
+.box02 p{ text-align:right;}
+.p01{ font-size:58px; line-height:60px;}
+.p02{ color:#fff; padding:0 10px; font-family:Arial, Helvetica, sans-serif; line-height:30px; font-size:14px; font-weight:bold;}
+.p03{ padding-top:8px; color:#2b2b2b;}
+.bg_col01{ background:#3b5796; height:31px; border-right:2px solid #fff; position:absolute; left:108px; top:105px; z-index:100;}
+.bg_col02{ background:#ab2f2f; height:31px; border-left:2px solid #fff; position:absolute; right:108px; top:105px; z-index:100;}
+.v01{ background:url(http://y0.ifengimg.com/vote/usa2012/v01.gif); width:96px; height:101px; position:absolute; left:300px; top:35px; z-index:300;}
+.v02{ background:url(http://y0.ifengimg.com/vote/usa2012/v02.gif); width:96px; height:101px; position:absolute; right:300px; top:35px; z-index:300;}
+.tit01{ background:url(http://y1.ifengimg.com/vote/usa2012/tit01.gif); height:48px;}
+.tit02{ background:url(http://y1.ifengimg.com/vote/usa2012/tit02.gif); height:48px;}
+.tit03{ background:url(http://y0.ifengimg.com/vote/usa2012/tit03.gif); height:43px;}
+.table01 td{ border-bottom:1px solid #999; font-size:14px; color:#666;}
+.p04{ padding-left:33px;}
+.table01 .c_red02{ color:#AB2F2F; }
+.p05{ padding-right:4px; text-align:center;}
+.p06{ text-align:center;}
+.pictxt01{ padding:25px 0;}
+.pictxt01 li{ width:229px; float:left; background:url(http://y0.ifengimg.com/vote/usa2012/bg02.gif) no-repeat; padding-right:28px;}
+.pictxt01 li.pd_no{ padding:0;}
+.a02{ padding:6px; display:block;}
+.a01{ text-align:center; width:228px; display:block; font:14px/22px simsun;}
+.vote{ height:39px; padding-left:20px;}
+.v_name{ padding:10px 10px 0; font:14px/24px simsun; color:#666; float:left;}
+.v_box{ width:200px; float:left; position:relative; height:39px;}
+.v_box span{ font:bold 12px/28px Arial, Helvetica, sans-serif;}
+.v_s01{ float:left; color:#3d538f;}
+.v_s02{ float:right; color:#ab2f31}
+.v_box01{ height:7px; background:#3d538f; position:absolute; left:0; top:22px; z-index:2; overflow:hidden;}
+.v_box02{ height:7px; background:#ab2f31; border-left:1px solid #fff; position:absolute; right:0; top:22px; z-index:2; overflow:hidden;}
+.v_box03 { height:7px; background:#d6d7d8; position:absolute; left:0; top:22px; z-index:1; width: 200px; overflow:hidden; }
+.mg_t30{ margin-top:30px;}
+.banner{ background:url(http://y3.ifengimg.com/290d4f76e4804de2/2012/1107/rdn_5099ab8c1d93e.gif) no-repeat center 0; height:100px;}
+.p07{ padding:79px 0 0 867px; line-height:20px;}
+.p07 a,.p07 a:hover,.p07 a:visited,.p07 a:link{ color:#fff;}
+
+.map_box_out { background: url(http://y1.ifengimg.com/vote/usa2012/map_bg.png);}
+.map_box {/* background: url(http://y0.ifengimg.com/vote/usa2012/map_bottom_bg.png) repeat-x left bottom; _background: url(http://y0.ifengimg.com/vote/usa2012/empty.png) no-repeat; height: 737px; position: relative; */}
+#map_main { position: absolute; top: 45px; -webkit-touch-callout: none; touch-callout: none; -webkit-user-select: none; user-select: none;}
+.refresh_info { position: absolute; top: 24px; right: 85px; color: #666666; line-height: 1.4; }
+.refresh_info em { color: #ab2636; }
+
+.refresh_button { position: absolute; top: 28px; right: 25px; width: 47px; height: 18px; background: url(http://y0.ifengimg.com/vote/usa2012/sign.png) no-repeat; color: #FFF; text-align: center; padding-top: 5px; cursor: pointer; }
+.refresh_button:hover { text-decoration: underline; }
+.refresh_button_disable { color: #999; }
+
+.time_info { position: absolute; bottom: 25px; left: 25px; color: #4d4d4e; line-height: 1.4; }
+
+.map_legend { position: absolute; bottom: 60px; right: 25px; }
+
+.map_legend td { padding: 5px 6px; }
+.map_legend th { padding: 5px 6px;  color: #666666; }
+.map_legend span { display: inline-block; width: 16px; height: 16px; }
+
+.co_win { background: #3d538e; }
+.co_lead { background: #b1c7e7; }
+.cr_win { background: #ab2f2f; }
+.cr_lead { background: #e97373; }
+.c_prepare { background: #d6d7d8; }
+
+.operate_info { position: absolute; bottom: 25px; right: 30px; color: #666666; }
+.design_info { position: absolute; bottom: 190px; right: 45px; color: #b1c7e7; font-family: Arial, Helvetica, sans-serif; }
+
+#map_back {position: absolute; width: 1000px; height: 737px; visibility: visible;}
+#map_info {}
+#map_mask {}
+#map_info_side {}
+
+#map_info_side {  width: 1000px; height: 737px; position: absolute; background: url(http://y0.ifengimg.com/vote/usa2012/map_line.png) no-repeat right -45px; }
+#map_info_side div { background: url(http://y0.ifengimg.com/vote/usa2012/title_bg.png) no-repeat; _background: url(http://y0.ifengimg.com/vote/usa2012/title_bg_ie6.png) no-repeat; width: 132px; height: 34px; position: absolute; cursor: pointer; z-index: 1; }
+#map_info_side p { border: 1px solid #FFF; background: #d6d7d8; width: 109px; height: 19px; font-size: 14px;  font-family: 'Microsoft Yahei', 微软雅黑; padding: 3px 8px; _padding: 6px 8px 0px 8px; }
+#map_info_side em { position: absolute; top: 5px; _top: 4px; right: 10px; font: 18px Arial, Helvetica, sans-serif; display: block; width: 20px; text-align: center; height: 19px; line-height: 19px; }
+#map_info_side .special_vermont { background: url(http://y0.ifengimg.com/vote/usa2012/title_bg1.png) no-repeat; _background: url(http://y0.ifengimg.com/vote/usa2012/title_bg1_ie6.png) no-repeat; width: 100px;}
+#map_info_side .special_vermont p { width: 76px; }
+#map_info_side .o_win p { background: #3d538e; color: #FFF; }
+#map_info_side .o_lead p { background: #b1c7e7; color: #3d538e; }
+#map_info_side .r_win p { background: #ab2f2f; color: #FFF; }
+#map_info_side .r_lead p { background: #e97373; color: #951a1a; }
+#map_info_side .prepare p { background: #d6d7d8; color: #000; }
+#map_info_side .o_win .hoverIt { background: #202f56; color: #FFF; }
+#map_info_side .o_lead .hoverIt { background: #6885b0; color: #3d538e; }
+#map_info_side .r_win .hoverIt { background: #741f1f; color: #FFF; }
+#map_info_side .r_lead .hoverIt { background: #db3b3b; color: #951a1a; }
+#map_info_side .prepare .hoverIt { background: #999999; color: #000; }
+#map_info_side .hoverIt { background: #999999; color: #000; }
+
+
+#map_info { width: 1000px; height: 737px; position: absolute; visibility: visible;}
+#map_info div { position: absolute; font-family: 'Microsoft Yahei', 微软雅黑; font-size: 12px; text-align: center; line-height: 1.2;}
+#map_info em { display: block; font: 18px Arial, Helvetica, sans-serif;}
+#map_info .special_louisiana { text-align: left; }
+#map_info .special_tennessee { width: 70px; display: block; float: left; }
+#map_info .special_tennessee em { float: right; margin-top: -2px; }
+#map_info .special_florida { text-align: left; }
+#map_info .special_northCarolina { text-align: right; }
+#map_info .r_win  { color: #FFF; }
+#map_info .o_win  { color: #FFF; }
+#map_info .prepare  { color: #000; }
+#map_info .special_hawaii { color: #000; }
+#map_info .o_lead  { color: #3d538e; }
+#map_info .r_lead  { color: #951a1a; }
+
+#js_pop_bar_box { visibility: visible; }
+
+#map_pop { position: absolute; visibility: hidden; top: 200px; left: 500px; width: 341px; height: 341px; z-index: 9999; background: url(http://y0.ifengimg.com/vote/usa2012/pop_bg.png) no-repeat center center; _background: url(http://y0.ifengimg.com/vote/usa2012/pop_bg_ie6.png) no-repeat; }
+#map_pop .title { position: absolute; top: 34px; left: 30px; font-size: 14px; font-weight: bold; }
+#map_pop .poll_count { position: absolute; top: 26px; right: 30px; color: #999; }
+#map_pop .poll_count em { font: 24px Arial, Helvetica, sans-serif; padding-right: 5px; }
+
+#map_pop .o_sign { position: absolute; bottom: 67px; left: 88px; width: 38px; height: 49px; background: url(http://y0.ifengimg.com/vote/usa2012/sign.png) no-repeat left bottom; }
+#map_pop .o_bar { position: absolute; bottom: 116px; left: 88px; width: 38px; height: 0px; background: url(http://y0.ifengimg.com/vote/usa2012/sign.png) no-repeat 0px -23px; }
+#map_pop .o_per { position: absolute; top: -26px; left: -20px; width: 78px; font: 22px Arial, Helvetica, sans-serif; text-align: center; color: #3d538e; }
+#map_pop .o_info { position: absolute; bottom: 34px; left: 48px; width: 118px; text-align: center; line-height: 1.2; }
+#map_pop .o_info em, #map_pop .r_info em { font: 12px Arial, Helvetica, sans-serif; }
+#o_win_bar, #r_win_bar { 
+    width: 57px; top: 167px; left: 80px; height: 57px; position: absolute;
+    background-image: url(http://y0.ifengimg.com/vote/usa2012/bar_win_sign.png)!important;
+    background-repeat: no-repeat;
+    _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://y0.ifengimg.com/vote/usa2012/bar_win_sign.png'); /* IE6 */
+    _ background-image: none; /* IE6 */    
+}
+#r_win_bar { left: 197px; }
+
+#map_pop .r_sign { position: absolute; bottom: 67px; right: 96px; width: 38px; height: 49px; background: url(http://y0.ifengimg.com/vote/usa2012/sign.png) no-repeat right bottom; }
+#map_pop .r_bar { position: absolute; bottom: 116px; right: 96px; width: 38px; height: 0px; background: url(http://y0.ifengimg.com/vote/usa2012/sign.png) no-repeat -38px -23px; }
+#map_pop .r_per { position: absolute; top: -26px; left: -20px; width: 78px; font: 22px Arial, Helvetica, sans-serif; text-align: center; color: #ab2f2f; }
+#map_pop .r_info { position: absolute; bottom: 34px; right: 56px; width: 118px; text-align: center; line-height: 1.2; }
+.ipad_pop_close { background: url(http://y0.ifengimg.com/vote/usa2012/ipad_close.png) no-repeat; position: absolute; top: -15px; right: -15px; width: 47px; height: 47px; display: none; }

@@ -1,0 +1,201 @@
+/*
+ * project  :  commentPage
+ * date   : 14-08
+ * author : qiyy
+ * history :
+ */
+body{font-family:"arial" , "simsun"  }
+/*
+.p-xxx  该页面通用
+*/
+
+/*
+public
+*/
+.p-col { width:1000px;margin:0 auto;}
+.p-wrap{background: url(../i/vote-bg.png) no-repeat center 0;min-width: 1000px;}
+.p-wrap .icon-win {display: block;width:42px;height:42px;background: url(../i/icon-win_24.png) no-repeat 0 0;}
+.p-wrap .icon-list{display: block;width: 33px;height: 33px;overflow: hidden;background-image: url(../i/icon-list.gif);background-repeat:  no-repeat;}
+.p-wrap .icon-O {background-position:  0 0;}
+.p-wrap .icon-D {background-position:  0 -33px;}
+.p-wrap .icon-R {background-position:  0 -66px;}
+    /*
+    彩条
+    */
+.p-wrap .colorC
+,.p-wrap .colorR
+,.p-wrap .colorL { height:100%;;position: absolute;top:0;}
+.p-wrap .colorC { left: 0 ; z-index: 2; background: #7cad52; }
+.p-wrap .colorR { right: 0 ; background: #ab2f2f;border-left:1px solid #fff;  }
+.p-wrap .colorL { left: 0 ; z-index: 3;;background: #3d538e;border-right:1px solid #fff; }
+
+/*
+top
+*/
+.p-topBox {  position: relative;;padding-top: 322px;margin-bottom: 115px; }
+.p-topShareBlock {}
+.p-topCellBlock {  float: left;margin-right: 20px;width: 320px;}
+.p-topCellBlock-last { margin-right:0 }
+.p-topCellBlock  .locTitle{height:38px;line-height: 48px;vertical-align: middle;;font-family: "microsoft yahei";color:#fff;font-size:14px;}
+.p-topCellBlock  .locTitle .chName{font-size:18px;}
+.p-topCellBlock  .locTitle .engName{font-size:14px;}
+.p-topCellBlock  .locTitle-1{padding-left:30px;background: url(../i/num-1.png) no-repeat 0 0 ;}
+.p-topCellBlock  .locTitle-2{padding-left:43px;background: url(../i/num-2.png) no-repeat 0 0 ;}
+.p-topCellBlock  .locTitle-3{padding-left:41px;background: url(../i/num-3.png) no-repeat 0 0 ;}
+.p-topCellBlock  .locCon{ width:320px;height:165px;position: relative; }
+.p-topCellBlock  .locCon span{display: block;position: absolute;}
+
+.p-topCellBlock  .locCon .numL
+,.p-topCellBlock  .locCon .numR { top:30px;font-size: 36px;line-height: 36px; }
+.p-topCellBlock  .locCon .tipsL
+,.p-topCellBlock  .locCon .tipsR {top:96px; font-size:12px;color:#717171;}
+.p-topCellBlock  .locCon .iconL
+,.p-topCellBlock  .locCon .iconR {top:118px;;width:72px;height:25px;text-indent: -99999px;}
+
+.p-topCellBlock  .locCon .numL
+,.p-topCellBlock  .locCon .tipsL
+,.p-topCellBlock  .locCon .iconL { left: 10px;}
+
+.p-topCellBlock  .locCon .numR
+,.p-topCellBlock  .locCon .tipsR
+,.p-topCellBlock  .locCon .iconR { right: 10px; }
+
+.p-topCellBlock  .locCon .numL{color: #3d538e;}
+.p-topCellBlock  .locCon .numR{color: #ab2f2f;}
+.p-topCellBlock  .locCon .tipsL{}
+.p-topCellBlock  .locCon .tipsR{}
+.p-topCellBlock  .locCon .iconL{background: url(../i/d-1.png) no-repeat 0 0;}
+.p-topCellBlock  .locCon .iconR{background: url(../i/d-2.png) no-repeat 0 0;}
+.p-topCellBlock  .locCon .iconC{left:0;top:43px;width:100%;padding-bottom: 10px;;height:14px;text-align: center;font-family: "microsoft yahei";font-size: 14px;color:#717171;background: url(../i/icon-arr-b.gif) no-repeat center bottom;}
+.p-topCellBlock  .locCon .icon-win {position: absolute;top:40px;z-index: 99}
+.p-topCellBlock  .locCon .colorLineBox{position: absolute;top:70px;left:10px;;width:300px;height:20px;background: #d6d7d8;}
+.p-topCellBlock  .locCon .colorLineBox-inner{position: relative;width: 100%;height:100%;}
+.p-topCellBlock  .locCon .colorL
+,.p-topCellBlock  .locCon .colorR
+,.p-topCellBlock  .locCon .colorC {}
+.p-topCellBlock  .locCon .colorL{ }
+.p-topCellBlock  .locCon .colorC{}
+.p-topCellBlock  .locCon .colorR{ }
+
+/*
+地图
+*/
+.p-voteMap {background: url(../i/map-bg.png) no-repeat center 10px}
+.p-mapTab {height:41px;background: url(../i/map-title-bg.gif) repeat-x 0 0;}
+.p-mapTab .tab-list {padding-left: 140px;;background: url(../i/vote-map-title.png) no-repeat 8px center;}
+.p-mapTab .tab-list li {width:165px;height:45px;float: left;background: url(../i/voteMap-titleLine.png) no-repeat right center;}
+.p-mapTab .tab-list .lastLi {background: none}
+.p-mapTab .tab-list a {display: block;width:100%;height:100%;font: 18px/40px "microsoft yahei" ;color:#478dc5;text-align: center}
+.p-mapTab .tab-list a:hover
+,.p-mapTab .tab-list .cur { background: url(../i/map-title-on.gif) no-repeat 0 0;color:#fff;text-decoration: none}
+
+.p-mapCon {width:100%;height:716px;margin-bottom: 55px;;position: relative;}
+
+.p-mapConRef
+,.p-mapConRefTips
+,.p-mapConLB
+,.p-mapConRB { position: absolute; font-size: 12px;}
+
+.p-mapConRef
+,.p-mapConRefTips {  top:25px;color:#666}
+
+.p-mapConLB
+,.p-mapConRB {bottom: 0;}
+
+.p-mapConRef {right:25px;width:20px;height:20px;}
+.p-mapConRef  .icon-refresh{right:25px;display: block;width:20px;height:20px;background: url(../i/icon-refresh.png) no-repeat 0 0;}
+.p-mapConRefTips {right:60px;top:23px}
+.p-mapConRefTips em{color:#ab2734}
+
+.p-mapConLB {left: 25px;color:#4d4d4d;}
+.p-mapConLB p {padding-top: 6px;}
+
+.p-mapConRB  {right:25px;width:145px;}
+.p-mapConRB  th
+,.p-mapConRB  td{;font-family: "microsoft yahei";color:#666;height:16px;line-height: 12px;vertical-align: middle}
+.p-mapConRB  th{text-align: center;padding-bottom: 2px;}
+.p-mapConRB  td.name{    text-align: right;}
+.p-mapConRB  td{padding-bottom: 9px;}
+
+.p-mapConRB  .gro {width:35px;height:15px;margin-left: 1px;margin-top: 2px;}
+.p-mapConRB  .gro-1 {background: #3d538e}
+.p-mapConRB  .gro-2 {background: #b1c7e7}
+.p-mapConRB  .gro-3 {background: #ab2f2f}
+.p-mapConRB  .gro-4 {background: #e97373}
+.p-mapConRB  .gro-5 {background: #7cab52}
+.p-mapConRB  .gro-6 {background: #b8e2bc}
+.p-mapConRB  .gro-7 {background: #cdcdcd}
+.p-mapConRB  .gro-8 {background: #f6f6f6}
+
+.p-mapTipsBox {margin: 0 25px 55px;background: url(../i/mapTis-line.png) repeat-x 0 4px;}
+.p-mapTipsBoxInner {background: url(../i/icon-mapTips.gif) no-repeat 0 0;padding-top: 4px;}
+.p-mapTipsBox p {border: 1px solid #d5d5d5;border-top: none;padding: 15px;line-height: 26px;font-size:14px;color:#939393}
+.p-mapTipsBox .emp{color:#5d5d5d}
+
+
+/*、
+表格
+*/
+
+.p-voteTableBox {margin-bottom: 55px;}
+
+    /*
+    表格title
+    */
+.p-voteTableTitle {background: url(../i/tableTitle-line.png) repeat-x 0 bottom;}
+.p-voteTableTitle .title {height:31px;background: url(../i/tableTitle-bg.png) no-repeat 0 0;text-indent: -99999px;}
+
+    /*
+    表格table
+    */
+.p-voteTable { width: 100%;}
+.p-voteTable th
+,.p-voteTable td{ border-bottom: 1px solid #ccc;}
+.p-voteTable th {height: 62px;line-height: 62px;vertical-align: middle;;font-family: "microsoft yahei";font-size:18px;color:#2b2b2b;text-align: center;}
+.p-voteTable td {height: 52px;line-height: 52px;vertical-align: middle;font-size:14px;color:#666;text-align: center}
+
+.p-voteTable .first{padding-left:33px ;}
+.p-voteTable td.first{text-align: left;}
+
+.p-voteTable .name {line-height: 52px;height: 52px;vertical-align: middle;}
+.p-voteTable .name .icon{display: inline-block;width:33px;margin-right: 10px;;line-height: 48px;height: 52px;vertical-align: middle;}
+.p-voteTable .name .txt{display: inline-block;font-size: 14px;}
+.p-voteTable .icon-list {display: inline-block;vertical-align: middle}
+
+.p-voteTable .colorBox {vertical-align: top;}
+.p-colLineBox {width:390px;margin: 0 auto;padding-top: 7px}
+.p-colLineBox .colLineBox-inner{height:6px;width:100%; position: relative;;background: #f6f6f6}
+
+.p-colLineBox .colLineBox-num { position: relative;;height:20px;}
+.p-colLineBox .colLineBox-num span {position: absolute;top:0;font-size: 14px;font-family:"arial";}
+.p-colLineBox .colLineBox-num .num-1 {left:0; color:#3d538e }
+.p-colLineBox .colLineBox-num .num-2 {left:49%; color:#7cad52 }
+.p-colLineBox .colLineBox-num .num-3 {right:0; color:#ab2f2f }
+
+
+/*
+分享
+*/
+.mod-shareList {position: absolute;right:0; top:20px;}
+.mod-shareList li{width:22px;height:22px;margin-left: 10px;float: left;}
+.mod-shareList a{display: inline-block;width:22px;height:22px;overflow: hidden;;background-image:url(../i/share.png);background-repeat: no-repeat ; }
+.mod-shareList .weibo{ background-position: 0 0}
+.mod-shareList .weibo:hover{background-position: 0 -22px}
+.mod-shareList .qzone{ background-position: 0 -44px;}
+.mod-shareList .qzone:hover{background-position: 0 -66px;}
+.mod-shareList .tt{background-position:  0 -88px;}
+.mod-shareList .tt:hover{background-position: 0 -110px;}
+.mod-shareList .weixin{background-position: 0 -132px;}
+.mod-shareList .weixin:hover{background-position: 0 -154px}
+
+.mod-gotoTop {position: fixed;   left: 75%;top: 80%;;height: 50px;width: 50px;padding-left: 151px;z-index: 99;}
+.mod-gotoTop a{display: block;width: 100%;height:100%;background: #717171;background: url(../i/gototop.png) no-repeat 0 0;}
+.mod-gotoTop a:hover{background-position: 0 -50px;}
+
+
+/*.ie6 {*/
+    /*_position: absolute;*/
+    /*_margin-top: 0;*/
+    /*_top: expression(documentElement.scrollTop);*/
+/*}*/
+

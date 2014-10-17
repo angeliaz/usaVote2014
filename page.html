@@ -1,0 +1,880 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>2014美国大选</title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="icon" href="http://www.ifeng.com/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/page.css">
+    <link rel="stylesheet" href="css/map.css">
+</head>
+<body>
+<div class="p-wrap">
+    <!--* 代码内注释，仅作为页面联调备注使用，在使用之后请删除，谢谢 -->
+    <!--顶部分享 + 三个白块-->
+    <div class="p-topBox p-col">
+        <!--预留shareDIV-->
+        <div class="p-topShareBlock">
+            <ul class="mod-shareList clearfix">
+                <li>
+                    <a href="##" class="weibo"></a>
+                </li>
+                <li>
+                    <a href="##" class="qzone"></a>
+                </li>
+                <li>
+                    <a href="##" class="tt"></a>
+                </li>
+                <li>
+                    <a href="##" class="weixin"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix">
+         <div class="p-topCellBlock">
+            <div class="locTitle locTitle-1"><span class="chName">众议院</span> / <span class="engName">House</span></div>
+            <div class="locCon">
+                <span class="numL">201</span>
+                <span class="numR">191</span>
+                <span class="tipsL">选前席位：199</span>
+                <span class="tipsR">选前席位：233</span>
+                <span class="iconL">民主党</span>
+                <span class="iconR">共和党</span>
+                <span class="iconC">218获胜</span>
+                <div class="colorLineBox">
+                    <div class="colorLineBox-inner">
+                        <div class="colorC" style="width:30%"></div>
+                        <div class="colorL" style="width:20%"></div>
+                        <div class="colorR" style="width:50%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="p-topCellBlock">
+            <div class="locTitle locTitle-2"><span class="chName">参议院</span> / <span class="engName">Senate</span></div>
+            <div class="locCon">
+                <span class="numL">201</span>
+                <span class="numR">191</span>
+                <span class="tipsL">选前席位：199</span>
+                <span class="tipsR">选前席位：233</span>
+                <span class="iconL">民主党</span>
+                <span class="iconR">共和党</span>
+                <span class="iconC">218获胜</span>
+                <span class="icon-win" style="left:200px;"></span>
+                <div class="colorLineBox">
+                    <div class="colorLineBox-inner">
+                        <div class="colorC" style="width:30%"></div>
+                        <div class="colorL" style="width:20%"></div>
+                        <div class="colorR" style="width:50%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="p-topCellBlock p-topCellBlock-last">
+            <div class="locTitle locTitle-3"><span class="chName">众议院</span> / <span class="engName">House</span></div>
+            <div class="locCon">
+                <span class="numL">201</span>
+                <span class="numR">191</span>
+                <span class="tipsL">选前席位：199</span>
+                <span class="tipsR">选前席位：233</span>
+                <span class="iconL">民主党</span>
+                <span class="iconR">共和党</span>
+                <span class="iconC">218获胜</span>
+                <div class="colorLineBox">
+                    <div class="colorLineBox-inner">
+                        <div class="colorC" style="width:30%"></div>
+                        <div class="colorL" style="width:20%"></div>
+                        <div class="colorR" style="width:50%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!--地图-->
+    <div class="p-voteMap">
+        <div class="p-voteMapInner p-col">
+            <div class="p-mapTab">
+                <ul class="tab-list clearfix">
+                    <li>
+                        <a class="cur" href="##">众议院选举</a>
+                    </li>
+                    <li>
+                        <a href="##">参议院选举</a>
+                    </li>
+                    <li class="lastLi">
+                        <a href="##">州长选举</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="p-mapCon">
+                <!--angela:地图dom-->
+                    <div id="map_main">
+                        
+                    </div>
+                <!--angela:地图dom-->
+                <div class="p-mapConRef"><a href="##" class="icon-refresh"></a></div>
+                <div class="p-mapConRefTips"><span class="txt">票数每<em>3秒</em>自动更新一次<br/>亦可点击手动刷新</span></div>
+                <div class="p-mapConLB">
+                    <p>鼠标滑过可查看各州开票情况</p>
+                    <p>数据截至：北京时间11月7日 10:55</p>
+                    <p>投票截止：北京时间11月7日 **:** </p>
+                </div>
+                <div class="p-mapConRB">
+                    <table width="100%">
+                        <colgroup>
+                            <col width="70">
+                            <col width="35">
+                            <col width="35">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>获胜</th>
+                            <th>领先</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name">民主党(D)：</td>
+                                <td><div class="gro gro-1"></div></td>
+                                <td><div class="gro gro-2"></div></td>
+                            </tr>
+                            <tr>
+                                <td  class="name">共和党(R)：</td>
+                                <td><div class="gro gro-3"></div></td>
+                                <td><div class="gro gro-4"></div></td>
+                            </tr>
+                            <tr>
+                                <td class="name">其&nbsp;&nbsp;&nbsp;他(O)：</td>
+                                <td><div class="gro gro-5"></div></td>
+                                <td><div class="gro gro-6"></div></td>
+                            </tr>
+                            <tr>
+                                <td  class="name">未计票：</td>
+                                <td><div class="gro gro-7"></div></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td  class="name">不参选：</td>
+                                <td><div class="gro gro-8"></div></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--上图说明 -->
+            <div class="p-mapTipsBox">
+                <div class="p-mapTipsBoxInner">
+                    <p><span class="emp">上图说明: </span>2012美国总统大选于北京时间11月7日07:00正式计票，各州分开统计票数，预计在5个小时内统计完毕，宣布结果。根据美国选举制度，大部分州采用赢者通吃原则，即如果候选人在这个州获得多数选民票数，他就会赢得该州的全部选举人票。最终，候选人只要获得270张及以上选举人票，即可当选美国总统。在本专题中的美国版图上，您首先看到的是各州的选举人票数，鼠标滑上去之后</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--地图end-->
+    <!--angelia:鼠标浮上地图遮罩begin-->
+    <div id="map_pop">
+        <div class="title">阿拉斯加州</div>
+        <div class="poll_count">选举人票数：<em>99</em>票</div>
+        <div class="ipad_pop_close"></div>
+        <div id="js_bar_box">
+        <div class="o_bar">
+            <div class="o_per"></div>
+        </div>
+        <div class="o_sign"></div>
+        <div class="o_info">奥巴马<br/><em>0</em>票</div>
+
+        <div class="r_bar">
+            <div class="r_per"></div>
+        </div>
+        <div class="r_sign"></div>
+        <div class="r_info">罗姆尼<br/><em>0</em>票</div>
+        </div>
+    </div>
+    <!--angelia:鼠标浮上地图遮罩end-->
+    <!--表格-->
+    <div class="p-voteTableBox p-col">
+        <div class="p-voteTableTitle">
+            <h4 class="title">各州选情</h4>
+        </div>
+        <table class="p-voteTable">
+            <colgroup>
+                <col width="*">
+                <col width="110">
+                <col width="140">
+                <col width="110">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="first">州名</th>
+                    <th>众议院席位</th>
+                    <th>开票时间</th>
+                    <th>计票状态</th>
+                    <th>民主党席位</th>
+                    <th>其他席位</th>
+                    <th>共和党席位</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="first">
+                        <div class="name">
+                            <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                            <span class="icon"><span class="icon-list icon-D"></span></span>
+                            <span class="txt">哥伦比亚特区</span>
+                        </div>
+                    </td>
+                    <td>55</td>
+                    <td>14:00</td>
+                    <td>已结束</td>
+                    <td class="colorBox" colspan="3">
+                        <div class="p-colLineBox">
+                            <div class="colLineBox-num">
+                                <span class="num-1">2</span>
+                                <span class="num-2">0</span>
+                                <span class="num-3">5</span>
+                            </div>
+                            <div class="colLineBox-inner">
+                                <div class="colorC" style="width:30%"></div>
+                                <div class="colorL" style="width:20%"></div>
+                                <div class="colorR" style="width:50%"></div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="first">
+                        <div class="name">
+                            <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                            <span class="icon"><span class="icon-list icon-R"></span></span>
+                            <span class="txt">哥伦比亚特区</span>
+                        </div>
+                    </td>
+                    <td>55</td>
+                    <td>14:00</td>
+                    <td>已结束</td>
+                    <td class="colorBox" colspan="3">
+                        <div class="p-colLineBox">
+                            <div class="colLineBox-num">
+                                <span class="num-1">2</span>
+                                <span class="num-2">0</span>
+                                <span class="num-3">5</span>
+                            </div>
+                            <div class="colLineBox-inner">
+                                <div class="colorC" style="width:30%"></div>
+                                <div class="colorL" style="width:20%"></div>
+                                <div class="colorR" style="width:50%"></div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="first">
+                        <div class="name">
+                            <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                            <span class="icon"><span class="icon-list icon-O"></span></span>
+                            <span class="txt">哥伦比亚特区</span>
+                        </div>
+                    </td>
+                    <td>55</td>
+                    <td>14:00</td>
+                    <td>已结束</td>
+                    <td class="colorBox" colspan="3">
+                        <div class="p-colLineBox">
+                            <div class="colLineBox-num">
+                                <span class="num-1">2</span>
+                                <span class="num-2">0</span>
+                                <span class="num-3">5</span>
+                            </div>
+                            <div class="colLineBox-inner">
+                                <div class="colorC" style="width:30%"></div>
+                                <div class="colorL" style="width:20%"></div>
+                                <div class="colorR" style="width:50%"></div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="first">
+                        <div class="name">
+                            <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                            <span class="icon"><span class="icon-list icon-O"></span></span>
+                            <span class="txt">哥伦比亚特区</span>
+                        </div>
+                    </td>
+                    <td>55</td>
+                    <td>14:00</td>
+                    <td>已结束</td>
+                    <td class="colorBox" colspan="3">
+                        <div class="p-colLineBox">
+                            <div class="colLineBox-num">
+                                <span class="num-1">2</span>
+                                <span class="num-2">0</span>
+                                <span class="num-3">5</span>
+                            </div>
+                            <div class="colLineBox-inner">
+                                <div class="colorC" style="width:0%"></div>
+                                <div class="colorL" style="width:0%"></div>
+                                <div class="colorR" style="width:100%"></div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="first">
+                        <div class="name">
+                            <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                            <span class="icon"><span class="icon-list icon-O"></span></span>
+                            <span class="txt">哥伦比亚特区</span>
+                        </div>
+                    </td>
+                    <td>55</td>
+                    <td>14:00</td>
+                    <td>已结束</td>
+                    <td class="colorBox" colspan="3">
+                        <div class="p-colLineBox">
+                            <div class="colLineBox-num">
+                                <span class="num-1">2</span>
+                                <span class="num-2">0</span>
+                                <span class="num-3">5</span>
+                            </div>
+                            <div class="colLineBox-inner">
+                                <div class="colorC" style="width:100%"></div>
+                                <div class="colorL" style="width:0%"></div>
+                                <div class="colorR" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="first">
+                        <div class="name">
+                            <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                            <span class="icon"><span class="icon-list icon-O"></span></span>
+                            <span class="txt">哥伦比亚特区</span>
+                        </div>
+                    </td>
+                    <td>55</td>
+                    <td>14:00</td>
+                    <td>进行中</td>
+                    <td class="colorBox" colspan="3">
+                        <div class="p-colLineBox">
+                            <div class="colLineBox-num">
+                                <span class="num-1">2</span>
+                                <span class="num-2">0</span>
+                                <span class="num-3">5</span>
+                            </div>
+                            <div class="colLineBox-inner">
+                                <div class="colorC" style="width:0%"></div>
+                                <div class="colorL" style="width:100%"></div>
+                                <div class="colorR" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="first">
+                        <div class="name">
+                            <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                            <span class="icon"><span class="icon-list icon-O"></span></span>
+                            <span class="txt">哥伦比亚特区</span>
+                        </div>
+                    </td>
+                    <td>55</td>
+                    <td>14:00</td>
+                    <td>未开始</td>
+                    <td class="colorBox" colspan="3">
+                        <div class="p-colLineBox">
+                            <div class="colLineBox-num">
+                                <span class="num-1">2</span>
+                                <span class="num-2">0</span>
+                                <span class="num-3">5</span>
+                            </div>
+                            <div class="colLineBox-inner">
+                                <div class="colorC" style="width:0%"></div>
+                                <div class="colorL" style="width:0%"></div>
+                                <div class="colorR" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--表格-->
+    <div class="p-voteTableBox p-col">
+        <div class="p-voteTableTitle">
+            <h4 class="title">各州选情</h4>
+        </div>
+        <table class="p-voteTable">
+            <colgroup>
+                <col width="*">
+                <col width="110">
+                <col width="140">
+                <col width="110">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="first">州名</th>
+                <th>众议院席位</th>
+                <th>开票时间</th>
+                <th>计票状态</th>
+                <th>民主党席位</th>
+                <th>其他席位</th>
+                <th>共和党席位</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-D"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>Ken buck (R)</td>
+                <td>14:00</td>
+                <td>已结束</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2%</span>
+                            <span class="num-2">0%</span>
+                            <span class="num-3">5%</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:30%"></div>
+                            <div class="colorL" style="width:20%"></div>
+                            <div class="colorR" style="width:50%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-R"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>已结束</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:30%"></div>
+                            <div class="colorL" style="width:20%"></div>
+                            <div class="colorR" style="width:50%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-O"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>已结束</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:30%"></div>
+                            <div class="colorL" style="width:20%"></div>
+                            <div class="colorR" style="width:50%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-O"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>已结束</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:0%"></div>
+                            <div class="colorL" style="width:0%"></div>
+                            <div class="colorR" style="width:100%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-O"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>已结束</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:100%"></div>
+                            <div class="colorL" style="width:0%"></div>
+                            <div class="colorR" style="width:0%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-O"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>进行中</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:0%"></div>
+                            <div class="colorL" style="width:100%"></div>
+                            <div class="colorR" style="width:0%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-O"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>未开始</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:0%"></div>
+                            <div class="colorL" style="width:0%"></div>
+                            <div class="colorR" style="width:0%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--表格-->
+    <div class="p-voteTableBox p-col">
+        <div class="p-voteTableTitle">
+            <h4 class="title">各州选情</h4>
+        </div>
+        <table class="p-voteTable">
+            <colgroup>
+                <col width="*">
+                <col width="110">
+                <col width="140">
+                <col width="110">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="first">州名</th>
+                <th>众议院席位</th>
+                <th>开票时间</th>
+                <th>计票状态</th>
+                <th>民主党席位</th>
+                <th>其他席位</th>
+                <th>共和党席位</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-D"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>Ken buck (R)</td>
+                <td>14:00</td>
+                <td>已结束</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2%</span>
+                            <span class="num-2">0%</span>
+                            <span class="num-3">5%</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:30%"></div>
+                            <div class="colorL" style="width:20%"></div>
+                            <div class="colorR" style="width:50%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-R"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>已结束</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:30%"></div>
+                            <div class="colorL" style="width:20%"></div>
+                            <div class="colorR" style="width:50%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-O"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>已结束</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:30%"></div>
+                            <div class="colorL" style="width:20%"></div>
+                            <div class="colorR" style="width:50%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-O"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>已结束</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:0%"></div>
+                            <div class="colorL" style="width:0%"></div>
+                            <div class="colorR" style="width:100%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-O"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>已结束</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:100%"></div>
+                            <div class="colorL" style="width:0%"></div>
+                            <div class="colorR" style="width:0%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-O"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>进行中</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:0%"></div>
+                            <div class="colorL" style="width:100%"></div>
+                            <div class="colorR" style="width:0%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="first">
+                    <div class="name">
+                        <!--没有图标隐藏这个 <span class="icon-list icon-D"></span>-->
+                        <span class="icon"><span class="icon-list icon-O"></span></span>
+                        <span class="txt">哥伦比亚特区</span>
+                    </div>
+                </td>
+                <td>55</td>
+                <td>14:00</td>
+                <td>未开始</td>
+                <td class="colorBox" colspan="3">
+                    <div class="p-colLineBox">
+                        <div class="colLineBox-num">
+                            <span class="num-1">2</span>
+                            <span class="num-2">0</span>
+                            <span class="num-3">5</span>
+                        </div>
+                        <div class="colLineBox-inner">
+                            <div class="colorC" style="width:0%"></div>
+                            <div class="colorL" style="width:0%"></div>
+                            <div class="colorR" style="width:0%"></div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--gototop-->
+    <div style="" class="mod-gotoTop ">
+        <a href="##" class="iconToTop"></a>
+    </div>
+</div>
+<script>
+var baseInfo = {"alabama":["亚拉巴马州",9,"9:00",1],"alaska":["阿拉斯加州",3,"13:00",1],"arizona":["亚利桑那州",11,"10:00",1],"arkansas":["阿肯色州",6,"9:30",1],"california":["加利福尼亚州",55,"12:00",1],"colorado":["科罗拉多州",9,"10:00",1],"connecticut":["康涅狄格州",7,"9:00",1],"delaware":["特拉华州",3,"9:00",1],"dc":["哥伦比亚特区",3,"9:00",1],"florida":["佛罗里达州",29,"8:00",1],"georgia":["佐治亚州",16,"8:00",1],"hawaii":["夏威夷州",4,"12:00",1],"idaho":["爱达荷州",4,"11:00",1],"illinois":["伊利诺伊州",20,"9:00",1],"indiana":["印第安纳州",11,"7:00",1],"iowa":["艾奥瓦州",6,"11:00",1],"kansas":["堪萨斯州",6,"10:00",1],"kentucky":["肯塔基州",8,"7:00",1],"louisiana":["路易斯安那州",8,"10:00",1],"maine":["缅因州",4,"9:00",2],"maryland":["马里兰州",10,"9:00",1],"massachusetts":["马萨诸塞州",11,"9:00",1],"michigan":["密歇根州",16,"9:00",1],"minnesota":["明尼苏达州",10,"10:00",1],"mississippi":["密西西比州",6,"10:00",1],"missouri":["密苏里州",10,"10:00",1],"montana":["蒙大拿州",3,"11:00",1],"nebraska":["内布拉斯加州",5,"10:00",2],"nevada":["内华达州",6,"11:00",1],"newHampshire":["新罕布什尔州",4,"13:00",1],"newJersey":["新泽西州",14,"09:00",1],"newMexixo":["新墨西哥州",5,"10:00",1],"newYork":["纽约州",29,"10:00",1],"northCarolina":["北卡罗来纳州",15,"08:30",1],"northDakota":["北达科他州",3,"11:00",1],"ohio":["俄亥俄州",18,"08:30",1],"oklahoma":["俄克拉何马州",7,"09:00",1],"oregon":["俄勒冈州",7,"12:00",1],"pennsylvenia":["宾夕法尼亚州",20,"09:00",1],"rhodeIsland":["罗得岛州",4,"09:00",1],"southCarolina":["南卡罗来纳州",9,"08:00",1],"southDakota":["南达科他州",3,"09:00",1],"tennessee":["田纳西州",11,"09:00",1],"texas":["德克萨斯州",38,"09:00",1],"utah":["犹他州",6,"11:00",1],"vermont":["佛蒙特州",3,"09:00",1],"virginia":["弗吉尼亚州",13,"08:00",1],"washington":["华盛顿州",12,"12:00",1],"westVirginia":["西弗吉尼亚州",5,"08:30",1],"wisconsin":["威斯康星州",10,"10:00",1],"wyoming":["怀俄明州",3,"10:00",1]};
+</script>
+<script src="http://y0.ifengimg.com/vote/usa2012/jquery-1.8.0.js" ></script>
+<script>
+    jQuery.noConflict();
+</script>
+<script src="http://y0.ifengimg.com/vote/usa2012/raphael.min.js" ></script>
+<script src="http://y0.ifengimg.com/vote/usa2012/paths.js" ></script>
+<script>
+    var oWinIcon = '<img src="http://y0.ifengimg.com/vote/usa2012/vv01.gif" />';
+    var rWinIcon = '<img src="http://y0.ifengimg.com/vote/usa2012/vv02.gif" />';
+    var usaUpdateUrl = "http://news.ifeng.com/usa2012/data/state.js";
+    var usaMaxLevel = 20;
+    var usaTimeInterval = 3000;
+</script>
+<script src="points.js" ></script>
+<script src="online.js" ></script>
+</body>
+</html>

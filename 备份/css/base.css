@@ -1,0 +1,273 @@
+/*reset default css*/
+
+html
+{
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+}
+body, div, td
+{
+    line-height: 1.4em;
+}
+body, div, ul, li,ol, h1, h2, h3, h4, h5, h6, form, fieldset, legend, input, textarea, p, th, td, dl, dt, dd
+{
+    margin: 0;
+    padding: 0;
+    font-size:12px;
+    font-family:  "arial","simsun";
+}
+
+p, fieldset, table, pre{margin-bottom: 0;}
+
+table
+{
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+img
+{
+    border: 0 none;
+}
+address, caption, cite, code, dfn, em, th, var
+{
+    font-style: normal;
+    font-weight: normal;
+}
+ul li
+{
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+}
+caption, th
+{
+    text-align: left;
+}
+h1, h2, h3, h4, h5, h6
+{
+    vertical-align: baseline;
+    zoom: 1;
+}
+input, textarea, select, button
+{
+    font-weight: inherit;
+    font-family: inherit;
+    font-size: inherit;
+}
+button
+{
+    border: none;
+    padding: 0;
+}
+button::-moz-focus-inner{
+    border: none;
+}
+input[type=radio], input[type=checkbox]
+{
+    vertical-align: middle;
+}
+
+input.checkbox {
+    vertical-align:middle;
+}
+
+* html input
+{
+    vertical-align: baseline;
+}
+textarea
+{
+    overflow: auto;
+}
+a{color:#000;}
+a:focus
+{
+    outline-style: none;
+    outline-width: 0;
+}
+ul:after
+{
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+
+/*base*/
+html {
+    background-color: #fff;
+}
+
+input.focus, textarea.focus {
+    background-color: #fffed7;
+}
+a {
+    text-decoration: none;
+    color:#004276;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #BA2636;
+}
+
+select {
+    vertical-align: middle;
+    font: inherit;
+}
+
+
+label.checkbox, label.radio, label.text {
+    padding: 0 6px 0 4px;
+    padding: 0 0 0 4px\9;
+    _padding: 0 0 0 2px;
+    vertical-align: middle;
+}
+
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearfix {
+    zoom: 1;
+    display: inline-block;
+    display: block;
+}
+
+.number {
+    color: #999;
+    font-family: Arial;
+    font-size: 11px;
+    _vertical-align: text-top;
+}
+.floatleft {
+    float: left;
+    /*display: inline;*/
+}
+
+.floatright {
+    float: right;
+}
+
+.aligncenter {
+    text-align: center;
+    clear: both
+}
+
+.alignright {
+    text-align: right;
+}
+
+.alignleft {
+    text-align: left;
+}
+
+.block {
+    display: block;
+}
+
+.justify {
+    text-align: justify;
+    text-justify: distribute;
+}
+
+.break {
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+.fixed {
+    position: fixed;
+}
+.nobreak {
+    white-space: nowrap;
+}
+.forcewrap {
+    word-wrap: break-word;
+    text-overflow: hidden;
+    overflow: hidden;
+}
+.ellipsis{
+    display: block;
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}
+
+.zoom {
+    zoom: 1;
+    position: relative;
+}
+
+.clear {
+    clear: both;
+}
+
+.b {
+    font-weight: bold;
+}
+
+
+/*font
+*/
+.yahei {
+    font-family: "microsoft yahei";
+    font-size: 18px;
+}
+
+.f12 {
+    font-size: 12px;
+}
+
+.f14 {
+    font-size: 14px;
+}
+
+.f18 {
+    font-size: 18px;
+}
+
+
+
+/*color
+*/
+.g2b{
+    color:#2b2b2b;
+}
+.light {
+    color: #f00;
+}
+.highlight{
+    color:#ba2636;
+}
+.error {
+    color: #f00;
+}
+.g9{
+    color:#999;
+}
+.g6{
+    color:#666;
+}
+.g3{
+    color:#333;
+}
+/*border
+*/
+.borderNone {
+    border: none;
+}
+
+
+
+
+
