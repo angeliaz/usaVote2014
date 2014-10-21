@@ -25,9 +25,9 @@ public
 .p-wrap .colorC
 ,.p-wrap .colorR
 ,.p-wrap .colorL { height:100%;;position: absolute;top:0;}
-.p-wrap .colorC { left: 0 ; z-index: 2; background: #7cad52; }
+.p-wrap .colorC { left: 0 ; z-index: 2; background: #7cad52; border-right:1px solid #fff;}
 .p-wrap .colorR { right: 0 ; background: #ab2f2f;border-left:1px solid #fff;  }
-.p-wrap .colorL { left: 0 ; z-index: 3;;background: #3d538e;border-right:1px solid #fff; }
+.p-wrap .colorL { left: 0 ; z-index: 3;background: #3d538e;border-right:1px solid #fff; }
 
 /*
 top

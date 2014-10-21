@@ -4,25 +4,25 @@ var pollUpdate;
 	// 状态所对应的颜色，数组中 0 是默认颜色，1 鼠标hover的颜色，2 字体颜色
 	var stateColor = {
 		// 共和党领先
-		r_lead: ["#e97373", "#db3b3b", "#fff"],
+		r_lead: ["#e97373", "#bb5959", "#fff"],
 		// 共和党获胜
-		r_win: ["#ab2f2f", "#741f1f", "#FFFFFF"],
+		r_win: ["#ab2f2f", "#862222", "#FFFFFF"],
 		// 民主党领先
-		d_lead: ["#b1c7e7", "#6885b0", "#fff"],
+		d_lead: ["#b1c7e7", "#859ab8", "#fff"],
 		// 民主党获胜
-		d_win: ["#3d538e", "#202f56", "#FFFFFF"],
+		d_win: ["#3d538e", "#1e3265", "#FFFFFF"],
 		// 其它党领先
-		o_lead: ["#b8e2bc", "#b8e2bc", "#fff"],
+		o_lead: ["#b8e2bc", "#8db190", "#fff"],
 		// 其它党获胜
-		o_win: ["#7acd52", "#7acd52", "#fff"],
+		o_win: ["#7acd52", "#648c42", "#fff"],
 		// 两派领先
-		twins_lead: ["#7d7d7d", "#7d7d7d", "#fff"],
+		twins_lead: ["#7d7d7d", "#565656", "#fff"],
 		// 两派获胜
-		twins_win: ["#7d7d7d", "#7d7d7d", "#fff"],
+		twins_win: ["#7d7d7d", "#565656", "#fff"],
 		// 尚未开始投票
-		prepare: ["#cfcfcf", "#cfcfcf", "#000000"],
+		prepare: ["#cfcfcf", "#aeaeae", "#000000"],
 		// 不参选
-		not_join: ["#f6f6f6", "#f6f6f6", "#000000"]
+		not_join: ["#f6f6f6", "#e9e9e9", "#000000"]
 	};
 
 	var Util = {
@@ -38,6 +38,7 @@ var pollUpdate;
 		},
 
 		// 获取最大值的索引
+		// 如果返回0, 说明最大值为两个
 		getMaxIndex: function(n1, n2, n3) {
 			var count = 0, index = 0;
 			var maxNum = Math.max(n1, n2, n3);
@@ -68,6 +69,26 @@ var pollUpdate;
 		}
 
 	};
+
+	var winStatus = ["icon-D","icon-R","icon-O",""];
+	var voteStatus = ["未开始","进行中","已结束"];
+	var str = "" ; 
+	var winStr = "" ; // 输赢字符串
+	var voteStr = "" ; //计票字符串
+	var pieceStr = ""; //数据条字符串
+	var status = "" ; //开票状态
+	var time = 0 ; //开票时间
+	var num = 0 ; //票数总和
+	var numD = 0 ; //民主党占比
+	var numR = 0 ; //共和党占比
+	var numO = 0 ; //其他党占比
+	var per = [] ; //占比数组
+	var flag = null ; //状态标示 民主党0 / 共和党1 / 其他党2 / 不显示为3
+	var iconStr = "" ; //图标字符串
+	var total = []; //总票数存储数组
+	var numL,numR = null; //总票数选择器元素
+	var title = []; //选情列表title
+	var seat = "";
 
 	// 定义两个地图容器，背景题图，蒙版地图
 	var paperBack, paperMask;
@@ -116,14 +137,6 @@ var pollUpdate;
 			var stateId;
 			var oMap;
 			var baseName = Params.baseName;
-
-			/*for(stateId in mappaths) {
-				oMap = {};
-				oMap.back = creatMapBack(stateId);
-				oMap.info = creatMapInfo(stateId);
-				oMap.mask = creatMapMask(stateId);
-				mapData[stateId] = oMap;
-			}*/
 
 			var i = 0, len = baseName.length;
 			for(; i < len; i++) {
@@ -182,7 +195,7 @@ var pollUpdate;
 			var block = paperBack.path(mappaths[stateId]);
 			block.stateId = stateId;
 			
-			// 初始化为尚未开始投票。
+			// 初始化为尚未不参选。
 			block.state = "not_join";
 			block.attr({
 				fill: stateColor["not_join"][0],
@@ -282,35 +295,37 @@ var pollUpdate;
 	// pc上的鼠标的mouseover的回调函数
 	var pOver = function(e) {
 
-			var _this = this;
-			var stateId = this.stateId;
-			var stateIndex = Util.getIndexByState(voteType, stateId);
-			var block = mapData[stateId].back;
-			var fillColor = stateColor[block.state][1];
+		var _this = this;
+		var stateId = this.stateId;
+		var stateIndex = Util.getIndexByState(voteType, stateId);
+		var block = mapData[stateId].back;
+		var fillColor = stateColor[block.state][1];
+
+		
+		// 200毫秒的延迟显示pop窗口
+		popTimer = setTimeout(function() {
+
+			var $textDiv = $("#t_" + stateId);
+			if($textDiv.parent()[0].id === "map_info_side") {
+				$textDiv.find("p").addClass("hoverIt");
+			}
+
+			block.attr({
+				fill: fillColor
+			});
+
+			$(popInfo).data("refStateId", '');
+			currentBlock = _this;
+			popTimer = null;
 
 			if(typeof stateIndex !== 'undefined' && stateIndex >= 0) {
-				// 200毫秒的延迟显示pop窗口
-				popTimer = setTimeout(function() {
-
-					var $textDiv = $("#t_" + stateId);
-					if($textDiv.parent()[0].id === "map_info_side") {
-						$textDiv.find("p").addClass("hoverIt");
-					}
-
-					block.attr({
-						fill: fillColor
-					});
-					currentBlock = _this;
-
-					popInfo.style.visibility = "visible";
-					popTimer = null;
-					changePop(stateId, stateInfo[stateIndex]);
-
-				}, 200);
+				popInfo.style.visibility = "visible";
+				changePop(stateId, stateInfo[stateIndex]);
 			}
-			
 
-		};
+		}, 200);
+		
+	};
 
 	// pc上的鼠标mouseout的回调函数
 	var pOut = function(e) {
@@ -330,7 +345,6 @@ var pollUpdate;
 				popTimer = null;
 				return;
 			}
-
 			block.attr({
 				fill: fillColor
 			});
@@ -384,7 +398,7 @@ var pollUpdate;
 
 				});
 
-			} else {
+			} else { 
 
 				$("#map_info_side").delegate("div", "mouseenter", function() {
 
@@ -395,23 +409,22 @@ var pollUpdate;
 					var block = mapData[stateId].back;
 					var condition = block.state;
 					var fillColor = stateColor[block.state][1];
-
-					if('undefined' !== typeof stateIndex && stateIndex >= 0) {
+					
 						popTimer = setTimeout(function() {
 
 							block.attr({
 								fill: fillColor
 							});
 							currentBlock = blockMask;
-							popInfo.style.visibility = "visible";
 							popTimer = null;
 
-							changePop(stateId, stateInfo[stateIndex]);
+							if('undefined' !== typeof stateIndex && stateIndex >= 0) {
+								popInfo.style.visibility = "visible";
+								changePop(stateId, stateInfo[stateIndex]);
+							}
 							$(this).find("p").addClass("hoverIt");
 
 						}, 200);
-					}
-					
 
 				});
 
@@ -431,10 +444,214 @@ var pollUpdate;
 					$(this).find("p").removeClass("hoverIt");
 
 				});
-
 			}
 
 		};
+
+	//xzw:
+	var updateTop = function(id,data){
+		numL = $(id).find(".numL").text(data[1]);
+		numR = $(id).find(".numR").text(data[0]);
+		icon_win = $(id).find(".icon-win");
+		per = perNum(data,1,0,2);
+		//console.log(per)
+		$(id).find(".colorL").animate({"width":per[0]+"%"},1000);
+		$(id).find(".colorR").animate({"width":per[1]+"%"},1000);
+		$(id).find(".colorC").animate({"width":per[2]+"%"},1000);
+		if(data[3] == 3){
+			win = data[0] - data[1];
+			if(win == 0){
+				icon_win.hide();
+			}
+			else if(win > 0){
+				icon_win.css({"left":"80px"});
+				icon_win.show();
+			}
+			else if(win < 0){
+				icon_win.css({"left":"200px"});
+				icon_win.show();
+			}
+
+		}
+	}
+
+	function perNum(arr,a,b,c){   //百分比数据
+		num = arr[a] + arr[b] + arr[c] ;
+		numD = arr[a] == 0 ? 0 :  parseInt(arr[a] * 100 / num) ;
+		numR = arr[b] == 0 ? 0 :  parseInt(arr[b] * 100/ num) ;
+		numO = arr[c] == 0 ? 0 :  100 - numR ;
+		return [numD,numR,numO] ; 
+	}
+
+	var updateStateData = function(data,type){
+
+		var stateId = data.states[type];
+		var state = stateId.state;
+		var len = state.length;
+
+		if(type == 0){
+			title = ["众议院席位","民主党席位","其他席位","共和党席位"];
+
+			$("table.p-voteTable").find("tHead").find("th.special").text(function(n){
+				return title[n];
+			})
+			updateHouseStateData(state);
+		}
+		else if(type == 1){
+			title = ["当选议员","民主党得票","其他得票","共和党得票"];
+
+			$("table.p-voteTable").find("tHead").find("th.special").text(function(n){
+				return title[n];
+			})
+			updateSenateStateData(state);
+		}
+		else if(type == 2){
+			title = ["当选州长","民主党得票","其他得票","共和党得票"];
+
+			$("table.p-voteTable").find("tHead").find("th.special").text(function(n){
+				return title[n];
+			})
+			updateGovernorStateData(state);
+		}
+	}
+
+	var updateHouseStateData = function(data){
+		$.each(data,function(n,obj){
+			//console.log(obj[7])
+			iconStr = "";  //每次清空
+			status = voteStatus[obj[0]-1];  //状态对应文字
+
+			if(obj[0] == 3){                 //判断最大党，平局为3,不显示 /  民主党0 / 共和党1 / 其他党2
+				if(obj[1]>obj[2]){
+					flag = obj[1] > obj[3] ? 0 : (obj[1] == obj[3] ? 3 : 2) ; 
+				}
+				else if(obj[1] < obj[2]){
+					flag = obj[2] > obj[3] ? 1 : (obj[2] == obj[3] ? 3 : 2) ;
+				}
+				else{
+					flag = obj[1] > obj[3] ? 3 : 2;
+				}	
+				iconStr = "<span class='icon-list "+ winStatus[flag] +"'></span>";
+			}
+			//console.log(obj[0])
+			if(flag == 3){                   // 3为不显示
+				iconStr = "";
+			}
+			if(obj[0] == 1){                 // 未开始状态
+				obj = [1,0,0,0] ;
+				per = [0,0,0] ;
+			}else{
+				per = perNum(obj,1,2,3)    //各党票数占比
+			}
+			
+			//图标字符串
+			winStr = "<tr><td class='first'><div class='name'><span class='icon'>"+ iconStr +"</span><span class='txt'>" + Params.baseNameCN[Params.zyStateId[n]] + "</span></div></td><td>";
+
+			//百分比字符串
+			voteStr = "<div class='p-colLineBox'><div class='colLineBox-num'>" + "<span class='num-1'>" + obj[2] + "</span>" + "<span class='num-2'>" + obj[3] + "</span>" + "<span class='num-3'>" + obj[1] + "</span></div>" ;
+			
+			//数据条字符串
+			pieceStr = "<div class='colLineBox-inner'><div class='colorC' style='width:" + per[2] + "%'></div>" + "<div class='colorL' style='width:" + per[0] + "%'></div>" + "<div class='colorR' style='width:" + per[1] + "%'></div>" + "</div></div>";
+
+			//整体字符串
+			str = winStr + Params.zySeats[n] + "</td><td>" + time + "</td><td>" + status + "</td><td class='colorBox' colspan='3'>" + voteStr + pieceStr + "</td></tr>";
+
+			//更新列表
+			$("table.p-voteTable").find("tBody").append(str);
+		})
+	}
+
+	var updateSenateStateData = function(data){
+		$.each(data,function(n,obj){
+			//console.log(obj[7])
+			iconStr = "";  //每次清空
+			status = voteStatus[obj[0]-1];  //状态对应文字
+
+			if(obj[0] == 3){                 //判断最大党，平局为3,不显示 /  民主党0 / 共和党1 / 其他党2
+				if(obj[1]>obj[2]){
+					flag = obj[1] > obj[3] ? 0 : (obj[1] == obj[3] ? 3 : 2) ;
+				}
+				else if(obj[1] < obj[2]){
+					flag = obj[2] > obj[3] ? 1 : (obj[2] == obj[3] ? 3 : 2) ;
+				}
+				else{
+					flag = obj[1] > obj[3] ? 3 : 2;
+				}	
+				iconStr = "<span class='icon-list "+ winStatus[flag] +"'></span>";
+			}
+			//console.log(obj[0])
+			if(flag == 3){                   // 3为不显示
+				iconStr = "";
+			}
+			if(obj[0] == 1){                 // 未开始状态
+				obj = [1,0,0,0] ;
+				per = [0,0,0] ;
+			}else{
+				per = perNum(obj,1,2,3)    //各党票数占比
+			}
+			seat = obj[7]||"";
+			//图标字符串
+			winStr = "<tr><td class='first'><div class='name'><span class='icon'>"+ iconStr +"</span><span class='txt'>" + Params.baseNameCN[Params.cyStateId[n]] + "</span></div></td><td>";
+
+			//百分比字符串
+			voteStr = "<div class='p-colLineBox'><div class='colLineBox-num'>" + "<span class='num-1'>" + obj[2] + "</span>" + "<span class='num-2'>" + obj[3] + "</span>" + "<span class='num-3'>" + obj[1] + "</span></div>" ;
+			
+			//数据条字符串
+			pieceStr = "<div class='colLineBox-inner'><div class='colorC' style='width:" + per[2] + "%'></div>" + "<div class='colorL' style='width:" + per[0] + "%'></div>" + "<div class='colorR' style='width:" + per[1] + "%'></div>" + "</div></div>";
+
+			//整体字符串
+			str = winStr + seat + "</td><td>" + time + "</td><td>" + status + "</td><td class='colorBox' colspan='3'>" + voteStr + pieceStr + "</td></tr>";
+
+			//更新列表
+			$("table.p-voteTable").find("tBody").append(str);
+		})
+	}
+
+	var updateGovernorStateData = function(data){
+		$.each(data,function(n,obj){
+			//console.log(obj[7])
+			iconStr = "";  //每次清空
+			status = voteStatus[obj[0]-1];  //状态对应文字
+
+			if(obj[0] == 3){                 //判断最大党，平局为3,不显示 /  民主党0 / 共和党1 / 其他党2
+				if(obj[1]>obj[2]){
+					flag = obj[1] > obj[3] ? 0 : (obj[1] == obj[3] ? 3 : 2) ;
+				}
+				else if(obj[1] < obj[2]){
+					flag = obj[2] > obj[3] ? 1 : (obj[2] == obj[3] ? 3 : 2) ;
+				}
+				else{
+					flag = obj[1] > obj[3] ? 3 : 2;
+				}	
+				iconStr = "<span class='icon-list "+ winStatus[flag] +"'></span>";
+			}
+			//console.log(obj[0])
+			if(flag == 3){                   // 3为不显示
+				iconStr = "";
+			}
+			if(obj[0] == 1){                 // 未开始状态
+				obj = [1,0,0,0] ;
+				per = [0,0,0] ;
+			}else{
+				per = perNum(obj,1,2,3)    //各党票数占比
+			}
+			seat = obj[7]||"";
+			//图标字符串
+			winStr = "<tr><td class='first'><div class='name'><span class='icon'>"+ iconStr +"</span><span class='txt'>" + Params.baseNameCN[Params.zzStateId[n]] + "</span></div></td><td>";
+
+			//百分比字符串
+			voteStr = "<div class='p-colLineBox'><div class='colLineBox-num'>" + "<span class='num-1'>" + obj[2] + "</span>" + "<span class='num-2'>" + obj[3] + "</span>" + "<span class='num-3'>" + obj[1] + "</span></div>" ;
+			
+			//数据条字符串
+			pieceStr = "<div class='colLineBox-inner'><div class='colorC' style='width:" + per[2] + "%'></div>" + "<div class='colorL' style='width:" + per[0] + "%'></div>" + "<div class='colorR' style='width:" + per[1] + "%'></div>" + "</div></div>";
+
+			//整体字符串
+			str = winStr + seat + "</td><td>" + time + "</td><td>" + status + "</td><td class='colorBox' colspan='3'>" + voteStr + pieceStr + "</td></tr>";
+
+			//更新列表
+			$("table.p-voteTable").find("tBody").append(str);
+		})
+	}
 
 	// 投票数据的更新函数，通过异步请求来触发
 	pollUpdate = function(datas) {
@@ -445,14 +662,20 @@ var pollUpdate;
 		if(stateInfo.timestamp >= datas.timestamp) {
 			return;
 		}
-
-		$("#map_back")[0].style.visibility = "hidden";
-		$("#map_info")[0].style.visibility = "hidden";
+		
+		for(var i = 0 ; i < 3 ; i++){
+    		total[i] = datas.states[i].total;
+    		total[i][3] = datas.states[i].condition;
+    	};
+    	updateTop("#boxL",total[0]);
+    	updateTop("#boxM",total[1]);
+    	updateTop("#boxR",total[2]);
+    	$("table.p-voteTable tBody").empty();
 
 		// type:0众议院|1参议院|2州长
-		var type = $('.p-mapTab li a').index($('.cur'));
-		voteType = type;
-		triggerByType(type, datas);
+		voteType = $('.p-mapTab li a').index($('.cur'));
+		updateStateData(datas,voteType);
+		triggerByType(voteType, datas);
 		
 		return;
 	};
@@ -472,24 +695,24 @@ var pollUpdate;
 			relation = Params.zzStateId;
 		}
 
+		$("#map_back")[0].style.visibility = "hidden";
+		$("#map_info")[0].style.visibility = "hidden";
+
 		// 众议院：只有参与州的数据，不参与的显示默认值
 		var i = 0, len = relation.length;
 		for(; i < len; i++) {
 			stateId = baseName[relation[i]];
 			data = voteData[i];
-			//console.log('stateId:' + stateId + '; '  + i  +'; data:' +  data);
 			// 参议院多余两条数据
-			if(!(voteType === 1 && (i === 24 || i === 28))) {
+			if(!(voteType === 1 && (i === 25 || i === 29))) {
 				changeMapState(stateId, data);
 			}
-			
 		}
 
 		$("#map_info")[0].style.visibility = "visible";
 		$("#map_back")[0].style.visibility = "visible";
 
 		stateInfo = voteData;  // 某种选举全部数据
-
 
 		if(currentBlock) {
 			var stateIds;
@@ -511,14 +734,17 @@ var pollUpdate;
 			var currentState = block.state;
 			
 			var state = getState(stateId, data); // 获取开票状态
-			//console.log('currentState:' + currentState + '; state:' + state + '; ' + stateColor[state][0] + '; ' + stateId);
+			console.log('stateId:' + stateId)
 			if(currentState !== state) {
 				block.state = state;
 				block.attr({
 					fill: stateColor[state][0]
 				});
 				var specialClass = $("#t_" + stateId).attr("data-class") || "";
-				document.getElementById("t_" + stateId).className = state + " " + specialClass;
+				if(specialClass !== 'special_hawaii') {
+					document.getElementById("t_" + stateId).className = state + " " + specialClass;
+				}
+				
 			}
 
 		};
@@ -562,12 +788,11 @@ var pollUpdate;
 
 		};
 
-	// 改变弹出窗口的数据
-	// todo 1026 那个refStateId是否需要这么做，因为这么做，又多了一个状态值，能否用现有状态替代。
 	/**
-	 * [changePop description]
-	 * @param  {String} stateId [州名称]
-	 * @param  {Array}  data    [该州的一条数组数据]
+	 * 改变弹出窗口的数据
+	 * @TODO: 1026 那个refStateId是否需要这么做，因为这么做，又多了一个状态值，能否用现有状态替代。
+	 * @param  {String} stateId  州名称
+	 * @param  {Array}  data     该州的一条数组数据
 	 */
 	var changePop = function(stateId, data) {
 
@@ -586,12 +811,14 @@ var pollUpdate;
 			// 根据当前要显示的州的id跟上一次显示的州的id做比较，来初始化pop窗口的内容。
 			// 如果两个id不一样，即说明这次pop中的数据不是上个州的，需要进行初始化的动画（从0开始的动画）
 			if(refStateId !== stateId) {
-				var title = Params.baseNameCN[Params.baseName.indexOf(stateId)];
 				var index = Util.getIndexByState(stateId);
 				$pop.data("refStateId", stateId);
-				$pop.find(".title").text(title);
-				$pop.find(".poll_count em").text(Params.zySeats[index]);
-				
+				$pop.find(".title").text(Params.baseNameCN[Params.baseName.indexOf(stateId)]);
+				if(voteType === 0) {
+					$pop.find(".poll_count em").text(Params.zySeats[index]);
+				} else {
+					$pop.find(".poll_count").css("display", "none");
+				}
 
 				// 如果当前状态为未开始投票，则将百分比请空和投票数设为0
 				// todo 实际情况中是否需要这么做。
@@ -644,22 +871,22 @@ var pollUpdate;
 	// 为创建pop窗口的投票动画，进行数据的准备。
 	var creatAnimPop = function(lastData, currentData) {
 			var $pop = $(popInfo);
-			var elmOPre = $pop.find(".o_per")[0];
+			var elmOPre = $pop.find(".d_per")[0];
 			var elmRPre = $pop.find(".r_per")[0];
 			var elmOBar = $pop.find(".o_bar")[0];
 			var elmRBar = $pop.find(".r_bar")[0];
 			var elmOTicket = $pop.find(".o_info em")[0];
 			var elmRTicket = $pop.find(".r_info em")[0];
-			var dBeginTicket = lastData[1];
-			var rBeginTicket = lastData[2];
-			var oBeginTicket = lastData[3];
-			var dEndTicket = currentData[1];
-			var rEndTicket = currentData[2];
-			var oEndTicket = currentData[3];
+			var dBeginTicket = voteType === 0 ? lastData[2] : lastData[5];
+			var rBeginTicket = voteType === 0 ? lastData[1] : lastData[4];
+			var oBeginTicket = voteType === 0 ? lastData[3] : lastData[6];
+			var dEndTicket = voteType === 0 ? currentData[2] : currentData[5];
+			var rEndTicket = voteType === 0 ? currentData[1] : currentData[4];
+			var oEndTicket = voteType === 0 ? currentData[3] : currentData[5];
 
 			// 由于有人工干预，投票百分比的计算有点麻烦
-			var dBeginPre;
-			if(lastData[3] !== 0 && lastData[4] !== 0) {
+			var dBeginPre = lastData[2];
+			/*if(lastData[3] !== 0 && lastData[4] !== 0) {
 				dBeginPre = lastData[3];
 			} else {
 
@@ -671,10 +898,10 @@ var pollUpdate;
 					dBeginPre = (((dBeginTicket / (rBeginTicket + dBeginTicket)) * 100).toFixed(1)) / 1;
 				}
 
-			}
+			}*/
 
-			var rBeginPre;
-			if(lastData[3] !== 0 && lastData[4] !== 0) {
+			var rBeginPre = lastData[1];
+			/*if(lastData[3] !== 0 && lastData[4] !== 0) {
 				rBeginPre = lastData[4];
 			} else {
 
@@ -684,9 +911,10 @@ var pollUpdate;
 					rBeginPre = 100 - dBeginPre;
 				}
 
-			}
+			}*/
 
 			var oBeginPre = lastData[3];
+
 
 			var dEndPre = currentData[2];
 			/*if(currentData[3] !== 0 && currentData[4] !== 0) {
@@ -718,6 +946,7 @@ var pollUpdate;
 			var oEndPre = currentData[3];
 
 			clearTimeout(animPopProTime);
+			
 			// dBeginTicket:开始票数
 			// dEndTicket:  结束票数
 			// dBeginPre: 	开始百分比
@@ -728,14 +957,14 @@ var pollUpdate;
 
 	// @angelia:创建pop窗口的投票动画
 	var animPopPro = function(dDatas, rDatas, oDatas, count) {
-
 		var a = [];
-		var ratio = 8;
+		var ratio = 2.1;
+		var perStr = voteType === 0 ? '' : '%';
+		var fixedValue = voteType === 0 ? 0 : 1;
 		
+		// 当上次数据和本次没有变化时
 		if(dDatas[2] === dDatas[3] || count === 0) {
-			
-			var rWinBar = "";
-			var oWinBar = "";
+			var rWinBar = '', dWinBar = '', oWinBar = '';
 			var sFixTop = 'style="top: 167px;"';
 			
 			if(dDatas[3]*1.2 - 57 > 0) {
@@ -746,40 +975,44 @@ var pollUpdate;
 				sFixTop = 'style="top: '+ (167 - (rDatas[3]*1.2 - 57)/2) +'px;"';
 			}
 
+			// 开票结束
+			if(rDatas[4] === 3) {
+				var winIndex = Util.getMaxIndex(dDatas[3], rDatas[3], oDatas[3]);
+				
+				if(winIndex === 1) {
+					dWinBar = '<div id="d_win_bar" '+ sFixTop +'></div>';
+				} else if(winIndex === 2) {
+					rWinBar = '<div id="r_win_bar" '+ sFixTop +'></div>';
+				} else if(winIndex === 3) {
+					oWinBar = '<div id="o_win_bar" '+ sFixTop +'></div>';
+				} 
+			}
 
-	        if(rDatas[4] === 3) {
-	        	// 加上win标志
-	        	if(dDatas[3] > rDatas[3]) {
-	        		oWinBar = '<div id="d_win_bar" '+ sFixTop +'></div>';
-	        	} else {
-	        		rWinBar = '<div id="r_win_bar" '+ sFixTop +'></div>';
-	        	}
-
-	        }	
-
-	        a.push('<div class="d_bar" style="height: '+ dDatas[3]*ratio +'px"><div class="d_per">'+ dDatas[3].toFixed(0) +'</div></div><div class="d_sign"></div><div class="d_info">民主党(D)<br/><em>'+ Util.formatDot(dDatas[1]) +'</em>票</div>' + oWinBar);
-	        a.push('<div class="r_bar" style="height: '+ rDatas[3]*ratio +'px"><div class="r_per">'+ rDatas[3].toFixed(0) +'</div></div><div class="r_sign"></div><div class="r_info">共和党(R)<br/><em>'+ Util.formatDot(rDatas[1]) +'</em>票</div>' + rWinBar);
-	        a.push('<div class="o_bar" style="height: '+ oDatas[3]*ratio +'px"><div class="o_per">'+ oDatas[3].toFixed(0) +'</div></div><div class="o_sign"></div><div class="o_info">其它(O)<br/><em>'+ Util.formatDot(rDatas[1]) +'</em>票</div>' + rWinBar);
-
-	        //a.push('<div class="d_bar" style="height: '+ oDatas[3]*1.2 +'px"><div class="d_per">'+ dDatas[3].toFixed(1) +'%</div></div><div class="d_sign"></div><div class="d_info">民主党(D)<br/><em>'+ Util.formatDot(dDatas[1]) +'</em>票</div>' + oWinBar);
-	        //a.push('<div class="r_bar" style="height: '+ rDatas[3]*1.2 +'px"><div class="r_per">'+ rDatas[3].toFixed(1) +'%</div></div><div class="r_sign"></div><div class="r_info">共和党(R)<br/><em>'+ Util.formatDot(rDatas[1]) +'</em>票</div>' + rWinBar);
+	        a.push('<div class="d_bar" style="height: '+ dDatas[3]*ratio +'px"><div class="d_per">'+ dDatas[3].toFixed(fixedValue) + perStr +'</div></div><div class="d_sign"></div><div class="d_info">民主党(D)<br/><em>'+ Util.formatDot(dDatas[1]) +'</em>票</div>' + dWinBar);
+	        a.push('<div class="r_bar" style="height: '+ rDatas[3]*ratio +'px"><div class="r_per">'+ rDatas[3].toFixed(fixedValue) + perStr +'</div></div><div class="r_sign"></div><div class="r_info">共和党(R)<br/><em>'+ Util.formatDot(rDatas[1]) +'</em>票</div>' + rWinBar);
+	        a.push('<div class="o_bar" style="height: '+ oDatas[3]*ratio +'px"><div class="o_per">'+ oDatas[3].toFixed(fixedValue) + perStr +'</div></div><div class="o_sign"></div><div class="o_info">其它(O)<br/><em>'+ Util.formatDot(rDatas[1]) +'</em>票</div>' + oWinBar);
 	        
 	        document.getElementById("js_bar_box").innerHTML = a.join("");
 
 		} else {
-			oDifPre = (((dDatas[3] - dDatas[2]) / count).toFixed(1)) / 1;
-			dDatas[2] = dDatas[2] + oDifPre;
-			oDifTicket = Math.floor((dDatas[1] - dDatas[0]) / count);
-			dDatas[0] = dDatas[0] + oDifTicket;
+			dDifPre = (((dDatas[3] - dDatas[2]) / count).toFixed(1)) / 1;
+			dDatas[2] = dDatas[2] + dDifPre;
+			dDifTicket = Math.floor((dDatas[1] - dDatas[0]) / count);
+			dDatas[0] = dDatas[0] + dDifTicket;
 
 			rDifPre = (((rDatas[3] - rDatas[2]) / count).toFixed(1)) / 1;
 			rDatas[2] = rDatas[2] + rDifPre;
 			rDifTicket = Math.floor((rDatas[1] - rDatas[0]) / count);
 			rDatas[0] = rDatas[0] + rDifTicket;
 
-	        a.push('<div class="d_bar" style="height: '+ dDatas[2]*ratio +'px"><div class="d_per">'+ dDatas[2].toFixed(0) +'</div></div><div class="d_sign"></div><div class="d_info">民主党(D)<br/><em>'+ Util.formatDot(dDatas[0]) +'</em>票</div>');
-	        a.push('<div class="r_bar" style="height: '+ rDatas[2]*ratio +'px"><div class="r_per">'+ rDatas[2].toFixed(0) +'</div></div><div class="r_sign"></div><div class="r_info">共和党(R)<br/><em>'+ Util.formatDot(rDatas[0]) +'</em>票</div>');
-	        a.push('<div class="o_bar" style="height: '+ rDatas[2]*ratio +'px"><div class="o_per">'+ rDatas[2].toFixed(0) +'</div></div><div class="o_sign"></div><div class="o_info">其它(O)<br/><em>'+ Util.formatDot(rDatas[0]) +'</em>票</div>');
+			oDifPre = (((oDatas[3] - oDatas[2]) / count).toFixed(1)) / 1;
+			oDatas[2] = oDatas[2] + oDifPre;
+			oDifTicket = Math.floor((oDatas[1] - oDatas[0]) / count);
+			oDatas[0] = oDatas[0] + oDifTicket;
+
+	        a.push('<div class="d_bar" style="height: '+ dDatas[2]*ratio +'px"><div class="d_per">'+ dDatas[2].toFixed(fixedValue) + perStr +'</div></div><div class="d_sign"></div><div class="d_info">民主党(D)<br/><em>'+ Util.formatDot(dDatas[0]) +'</em>票</div>');
+	        a.push('<div class="r_bar" style="height: '+ rDatas[2]*ratio +'px"><div class="r_per">'+ rDatas[2].toFixed(fixedValue) + perStr +'</div></div><div class="r_sign"></div><div class="r_info">共和党(R)<br/><em>'+ Util.formatDot(rDatas[0]) +'</em>票</div>');
+	        a.push('<div class="o_bar" style="height: '+ oDatas[2]*ratio +'px"><div class="o_per">'+ oDatas[2].toFixed(fixedValue) + perStr +'</div></div><div class="o_sign"></div><div class="o_info">其它(O)<br/><em>'+ Util.formatDot(oDatas[0]) +'</em>票</div>');
 	        document.getElementById("js_bar_box").innerHTML = a.join("");
 
 			animPopProTime = setTimeout(function() {
@@ -900,7 +1133,32 @@ var pollUpdate;
 		// 画地图
 		initMap();
 
+		$('.p-mapTab li').delegate('a', 'click', function(e) {
+			$('.p-mapTab li a').removeClass('cur');
+			$(this).addClass('cur');
+			voteType = $('.p-mapTab li a').index($(this));
 
+			var baseName = Params.baseName;
+
+			var i = 0, len = baseName.length;
+			for(; i < len; i++) {
+				stateId = baseName[i];
+				
+				var block = mapData[stateId].back;
+				//block.stateId = stateId;
+				
+				// 初始化为尚未不参选。
+				block.state = "not_join";
+				// mapData[stateId].back
+				block.attr({
+					fill: stateColor["not_join"][0],
+					stroke: "#FFFFFF",
+					'stroke-width': 1,
+					'stroke-linejoin': 'round'
+				});
+			}
+			creatRequest();
+		});
 	};
 
 	init();
@@ -945,8 +1203,7 @@ var pollUpdate;
 
 	// 3秒轮询，根据机制看是否能进行请求
 	setInterval(function() {
-
-		if(canUpdate) {
+		if(document.hasFocus()) {
 
 			// 如果正在请求的数据为0
 			if(updateing <= 0) {
@@ -966,29 +1223,7 @@ var pollUpdate;
 		}
 
 	}, 3000);
-
-	// 坚持窗口是否活动
-	// @angelia 监测
-	if($.browser.msie) {
-
-		$(document).on("focusin", function() {
-			canUpdate = true;
-		});
-
-		$(document).on("focusout", function() {
-			canUpdate = false;
-		});
-
-	} else {
-		$(window).on("focus", function() {
-			canUpdate = true;
-		});
-
-		$(window).on("blur", function() {
-			canUpdate = false;
-		});
-	}
-
+	
 	// @angelia “刷新”功能
 	if(isMobile) {
 
