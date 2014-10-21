@@ -76,10 +76,13 @@
 #map_info_side em { position: absolute; top: 5px; _top: 4px; right: 10px; font: 18px Arial, Helvetica, sans-serif; display: block; width: 20px; text-align: center; height: 19px; line-height: 19px; }
 #map_info_side .special_vermont { background: url(http://y0.ifengimg.com/vote/usa2012/title_bg1.png) no-repeat; _background: url(http://y0.ifengimg.com/vote/usa2012/title_bg1_ie6.png) no-repeat; width: 100px;}
 #map_info_side .special_vermont p { width: 76px; }
-#map_info_side .o_win p { background: #3d538e; color: #FFF; }
-#map_info_side .o_lead p { background: #b1c7e7; color: #3d538e; }
+#map_info_side .not_join p { background: #f6f6f6; color: #000; }
+#map_info_side .o_win p { background: #7acd52; color: #FFF; }
+#map_info_side .o_lead p { background: #b8e2bc; color: #fff; }
+#map_info_side .d_win p { background: #3d538e; color: #FFF; }
+#map_info_side .d_lead p { background: #b1c7e7; color: #FFF; }
 #map_info_side .r_win p { background: #ab2f2f; color: #FFF; }
-#map_info_side .r_lead p { background: #e97373; color: #951a1a; }
+#map_info_side .r_lead p { background: #e97373; color: #FFF; }
 #map_info_side .prepare p { background: #d6d7d8; color: #000; }
 #map_info_side .o_win .hoverIt { background: #202f56; color: #FFF; }
 #map_info_side .o_lead .hoverIt { background: #6885b0; color: #3d538e; }
@@ -101,8 +104,12 @@
 #map_info .o_win  { color: #FFF; }
 #map_info .prepare  { color: #000; }
 #map_info .special_hawaii { color: #000; }
-#map_info .o_lead  { color: #3d538e; }
-#map_info .r_lead  { color: #951a1a; }
+#map_info .o_lead  { color: #fff; }
+#map_info .r_lead  { color: #fff; }
+#map_info .d_lead { color: #fff; }
+#map_info .d_win  { color: #fff; }
+#map_info .twins_lead  { color: #fff; }
+#map_info .twins_win  { color: #fff; }
 
 #js_pop_bar_box { visibility: visible; }
 
@@ -111,22 +118,32 @@
 #map_pop .poll_count { position: absolute; top: 26px; right: 30px; color: #999; }
 #map_pop .poll_count em { font: 24px Arial, Helvetica, sans-serif; padding-right: 5px; }
 
-#map_pop .o_sign { position: absolute; bottom: 67px; left: 88px; width: 38px; height: 49px; background: url(http://y0.ifengimg.com/vote/usa2012/sign.png) no-repeat left bottom; }
-#map_pop .o_bar { position: absolute; bottom: 116px; left: 88px; width: 38px; height: 0px; background: url(http://y0.ifengimg.com/vote/usa2012/sign.png) no-repeat 0px -23px; }
-#map_pop .o_per { position: absolute; top: -26px; left: -20px; width: 78px; font: 22px Arial, Helvetica, sans-serif; text-align: center; color: #3d538e; }
-#map_pop .o_info { position: absolute; bottom: 34px; left: 48px; width: 118px; text-align: center; line-height: 1.2; }
-#map_pop .o_info em, #map_pop .r_info em { font: 12px Arial, Helvetica, sans-serif; }
-#o_win_bar, #r_win_bar { 
-    width: 57px; top: 167px; left: 80px; height: 57px; position: absolute;
+#map_pop .d_sign { position: absolute; bottom: 67px; left: 57px; width: 38px; height: 0px; background: #3d538e; }
+#map_pop .d_bar { position: absolute; bottom: 67px; left: 57px; width: 38px; height: 0px; background: #3d538e; }
+#map_pop .d_per { position: absolute; top: -26px; left: -20px; width: 78px; font: 22px Arial, Helvetica, sans-serif; text-align: center; color: #3d538e; }
+#map_pop .d_info { position: absolute; bottom: 34px; left: 17px; width: 118px; text-align: center; line-height: 1.2; }
+#map_pop .r_sign { position: absolute; bottom: 67px; left: 157px; width: 38px; height: 0px; background: #ab2f2f; }
+#map_pop .r_bar { position: absolute; bottom: 67px; left: 157px; width: 38px; height: 0px; background: #ab2f2f; }
+#map_pop .r_per { position: absolute; top: -26px; left: -20px; width: 78px; font: 22px Arial, Helvetica, sans-serif; text-align: center; color: #ab2f2f; }
+#map_pop .r_info { position: absolute; bottom: 34px; left: 117px; width: 118px; text-align: center; line-height: 1.2; }
+
+#map_pop .o_sign { position: absolute; bottom: 67px; right: 57px; width: 38px; height: 49px; background: #7cad52; }
+#map_pop .o_bar { position: absolute; bottom: 67px; right: 57px; width: 38px; height: 0px; background: #7cad52; }
+#map_pop .o_per { position: absolute; top: -26px; left: -20px; width: 78px; font: 22px Arial, Helvetica, sans-serif; text-align: center; color: #7cad52; }
+#map_pop .o_info { position: absolute; bottom: 34px; right: 17px; width: 118px; text-align: center; line-height: 1.2; }
+
+#map_pop .d_info em, #map_pop .r_info em,#map_pop .o_info em { font: 12px Arial, Helvetica, sans-serif; }
+#d_win_bar, #r_win_bar, #o_win_bar { 
+    width: 57px; top: 167px; left: 49px; height: 57px; position: absolute;
     background-image: url(http://y0.ifengimg.com/vote/usa2012/bar_win_sign.png)!important;
     background-repeat: no-repeat;
     _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://y0.ifengimg.com/vote/usa2012/bar_win_sign.png'); /* IE6 */
     _ background-image: none; /* IE6 */    
 }
-#r_win_bar { left: 197px; }
+#r_win_bar { left: 149px; }
+#o_win_bar { left: 49px; }
 
-#map_pop .r_sign { position: absolute; bottom: 67px; right: 96px; width: 38px; height: 49px; background: url(http://y0.ifengimg.com/vote/usa2012/sign.png) no-repeat right bottom; }
-#map_pop .r_bar { position: absolute; bottom: 116px; right: 96px; width: 38px; height: 0px; background: url(http://y0.ifengimg.com/vote/usa2012/sign.png) no-repeat -38px -23px; }
-#map_pop .r_per { position: absolute; top: -26px; left: -20px; width: 78px; font: 22px Arial, Helvetica, sans-serif; text-align: center; color: #ab2f2f; }
-#map_pop .r_info { position: absolute; bottom: 34px; right: 56px; width: 118px; text-align: center; line-height: 1.2; }
+
 .ipad_pop_close { background: url(http://y0.ifengimg.com/vote/usa2012/ipad_close.png) no-repeat; position: absolute; top: -15px; right: -15px; width: 47px; height: 47px; display: none; }
+
+

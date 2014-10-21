@@ -1,28 +1,85 @@
 var pollUpdate;
 (function(win, $) {
 
-	// 总票数
-	var totalTicket = 538;
+	// 状态所对应的颜色，数组中 0 是默认颜色，1 鼠标hover的颜色，2 字体颜色
+	var stateColor = {
+		// 共和党领先
+		r_lead: ["#e97373", "#db3b3b", "#fff"],
+		// 共和党获胜
+		r_win: ["#ab2f2f", "#741f1f", "#FFFFFF"],
+		// 民主党领先
+		d_lead: ["#b1c7e7", "#6885b0", "#fff"],
+		// 民主党获胜
+		d_win: ["#3d538e", "#202f56", "#FFFFFF"],
+		// 其它党领先
+		o_lead: ["#b8e2bc", "#b8e2bc", "#fff"],
+		// 其它党获胜
+		o_win: ["#7acd52", "#7acd52", "#fff"],
+		// 两派领先
+		twins_lead: ["#7d7d7d", "#7d7d7d", "#fff"],
+		// 两派获胜
+		twins_win: ["#7d7d7d", "#7d7d7d", "#fff"],
+		// 尚未开始投票
+		prepare: ["#cfcfcf", "#cfcfcf", "#000000"],
+		// 不参选
+		not_join: ["#f6f6f6", "#f6f6f6", "#000000"]
+	};
+
+	var Util = {
+		// 是否是移动设备
+		find: function(a, b) {
+			return a.indexOf(b) + 1;
+		},
+
+		// 格式化数字中的逗号
+		formatDot: function(iNumber) {
+			var s = iNumber + '';
+			return s.replace(/(?=(?!\b)(?:\d{3})+(?!\d))/g, ',');
+		},
+
+		// 获取最大值的索引
+		getMaxIndex: function(n1, n2, n3) {
+			var count = 0, index = 0;
+			var maxNum = Math.max(n1, n2, n3);
+			if(maxNum === n1) {count++; index = 1;}
+			if(maxNum === n2) {count++; index = 2;}
+			if(maxNum === n3) {count++; index = 3;}
+			return (count === 1) ? index : 0;
+		},
+
+		getIndexByName: function(name, type) {
+			var i = 0, len = type.length;
+			for(; i < len; i++) {
+				if(name === type[i][1]) return type[i][0];
+			}
+		},
+
+		// 根据州名称获取索引
+		getIndexByState: function(type, stateId) {
+			var stateIndex = Params.baseName.indexOf(stateId);
+			if(type === 0) {
+				stateIds = Params.zyStateId;
+			} else if(type === 1) {
+				stateIds = Params.cyStateId;
+			} else {
+				stateIds = Params.zzStateId;
+			}
+			return stateIds.indexOf(stateIndex);
+		}
+
+	};
+
+	// 定义两个地图容器，背景题图，蒙版地图
+	var paperBack, paperMask;
+
+	// 定义窗口4个顶点的信息
+	var winTop, winLeft, winBottom, winRight;
 
 	// 状态信息，初始为空，请求到数据以后，如果是最新的，则更新此对象。
 	var stateInfo = {};
 
 	// 当前鼠标所在区块，激活弹出窗口时更新。
 	var currentBlock = null;
-
-	// 状态所对应的颜色，数组中 0 是默认颜色，1 鼠标hover的颜色，2 字体颜色
-	var stateColor = {
-		// 罗姆尼领先
-		r_lead: ["#e97373", "#db3b3b", "#951a1a"],
-		// 罗姆尼获胜
-		r_win: ["#ab2f2f", "#741f1f", "#FFFFFF"],
-		// 奥巴马领先
-		o_lead: ["#b1c7e7", "#6885b0", "#3d538e"],
-		// 奥巴马获胜
-		o_win: ["#3d538e", "#202f56", "#FFFFFF"],
-		// 尚未开始投票
-		prepare: ["#d6d7d8", "#999999", "#000000"]
-	};
 
 	// 弹出窗口的定时器
 	var popTimer = null;
@@ -37,21 +94,13 @@ var pollUpdate;
 	var wrapper = document.getElementById("map_main");
 	var popInfo = document.getElementById("map_pop");
 
-	// 定义两个地图容器，背景题图，蒙版地图
-	var paperBack, paperMask;
+	var voteType = $('.p-mapTab li a').index($('.cur'));
 
-	// 定义窗口4个顶点的信息
-	var winTop, winLeft, winBottom, winRight;
-
-	// 是否是移动设备
-	var find = function(a, b) {
-		return a.indexOf(b) + 1;
-	};
-
+	// 获取浏览器信息
 	var na = navigator.userAgent.toLowerCase();
-	var isAndroid = find(na, "android");
-	var isIphone = find(na, "iphone");
-	var isIpad = find(na, "ipad");
+	var isAndroid = Util.find(na, "android");
+	var isIphone = Util.find(na, "iphone");
+	var isIpad = Util.find(na, "ipad");
 	var isMobile = isIphone || isIpad || isAndroid;
 	var isPoorBrowser = isMobile || ($.browser.msie && $.browser.version == "6.0");
 	var animPopCount = isPoorBrowser ? 10 : 15;
@@ -66,11 +115,22 @@ var pollUpdate;
 
 			var stateId;
 			var oMap;
+			var baseName = Params.baseName;
 
-			for(stateId in mappaths) {
+			/*for(stateId in mappaths) {
 				oMap = {};
 				oMap.back = creatMapBack(stateId);
 				oMap.info = creatMapInfo(stateId);
+				oMap.mask = creatMapMask(stateId);
+				mapData[stateId] = oMap;
+			}*/
+
+			var i = 0, len = baseName.length;
+			for(; i < len; i++) {
+				oMap = {};
+				stateId = baseName[i];
+				oMap.back = creatMapBack(stateId);
+				oMap.info = creatMapInfo(stateId, i);
 				oMap.mask = creatMapMask(stateId);
 				mapData[stateId] = oMap;
 			}
@@ -121,10 +181,11 @@ var pollUpdate;
 
 			var block = paperBack.path(mappaths[stateId]);
 			block.stateId = stateId;
+			
 			// 初始化为尚未开始投票。
-			block.state = "prepare";
+			block.state = "not_join";
 			block.attr({
-				fill: "#97d6f5",
+				fill: stateColor["not_join"][0],
 				stroke: "#FFFFFF",
 				'stroke-width': 1,
 				'stroke-linejoin': 'round'
@@ -133,16 +194,30 @@ var pollUpdate;
 
 		};
 
-	// 建立州名称
-	var creatMapInfo = function(stateId) {
-
+	/**
+	 * 建立州名称
+	 * @param  {String} stateId 州英文名
+	 * @param  {Int} 	index   州name在baseName中索引
+	 */
+	var creatMapInfo = function(stateId, index) {
+			
 			var o = points[stateId];
-			var className = o.sClass || "";
+			var top = (parseInt(o.top)) + 'px';
+			
+			var className = o.sClass || "not_join";
+
+			var seatNum = '';
+			if(voteType === 0 && index < 50) {
+				var stateIndex = Params.zyStateId.indexOf(index);
+				seatNum = Params.zySeats[stateIndex];
+			}
+
+			var seatStyle = voteType === 0 ? '>' : ' style="visibility:hidden;">0';
 
 			if(typeof o.type !== "undefined" && o.type === "side") {
-				$("#map_info_side").append('<div id="t_' + stateId + '" class="' + className + '" style="top: ' + o.top + '; left: ' + o.left + ';" data-stateId="' + stateId + '" data-class="' + className + '" ><p><em>' + baseInfo[stateId][1] + '</em>' + o.text + '</p></div>');
+				$("#map_info_side").append('<div id="t_' + stateId + '" class="' + className + '" style="top: ' + top + '; left: ' + o.left + ';" data-stateId="' + stateId + '" data-class="' + className + '" ><p><em' + seatStyle + seatNum + '</em>' + o.text + '</p></div>');
 			} else {
-				$("#map_info").append('<div id="t_' + stateId + '" class="' + className + '" style="top: ' + o.top + '; left: ' + o.left + ';" data-stateId="' + stateId + '" data-class="' + className + '" ><em>' + baseInfo[stateId][1] + '</em>' + o.text + '</div>');
+				$("#map_info").append('<div id="t_' + stateId + '" class="' + className + '" style="top: ' + top + '; left: ' + o.left + ';" data-stateId="' + stateId + '" data-class="' + className + '" ><em' + seatStyle + seatNum + '</em>' + o.text + '</div>');
 			}
 			return "t_" + stateId;
 
@@ -209,26 +284,31 @@ var pollUpdate;
 
 			var _this = this;
 			var stateId = this.stateId;
+			var stateIndex = Util.getIndexByState(voteType, stateId);
 			var block = mapData[stateId].back;
 			var fillColor = stateColor[block.state][1];
 
-			// 200毫秒的延迟显示pop窗口
-			popTimer = setTimeout(function() {
+			if(typeof stateIndex !== 'undefined' && stateIndex >= 0) {
+				// 200毫秒的延迟显示pop窗口
+				popTimer = setTimeout(function() {
 
-				var $textDiv = $("#t_" + stateId);
-				if($textDiv.parent()[0].id === "map_info_side") {
-					$textDiv.find("p").addClass("hoverIt");
-				}
+					var $textDiv = $("#t_" + stateId);
+					if($textDiv.parent()[0].id === "map_info_side") {
+						$textDiv.find("p").addClass("hoverIt");
+					}
 
-				block.attr({
-					fill: fillColor
-				});
-				currentBlock = _this;
-				popInfo.style.visibility = "visible";
-				popTimer = null;
-				changePop(stateId, stateInfo.state[stateId]);
+					block.attr({
+						fill: fillColor
+					});
+					currentBlock = _this;
 
-			}, 200);
+					popInfo.style.visibility = "visible";
+					popTimer = null;
+					changePop(stateId, stateInfo[stateIndex]);
+
+				}, 200);
+			}
+			
 
 		};
 
@@ -283,6 +363,7 @@ var pollUpdate;
 					var fillColor = stateColor[block.state][1];
 
 					if(lastStateId !== "" && stateId !== lastStateId) {
+
 						mapData[lastStateId].back.attr({
 							fill: stateColor[mapData[lastStateId].back.state][0]
 						});
@@ -298,7 +379,8 @@ var pollUpdate;
 					currentBlock = mapData[stateId].mask;
 					getMouseXY_touch(e.originalEvent);
 					popInfo.style.visibility = "visible";
-					changePop(stateId, stateInfo.state[stateId]);
+					var stateIndex = Util.getIndexByState(voteType, stateId);
+					changePop(stateId, stateInfo[stateIndex]);
 
 				});
 
@@ -308,23 +390,28 @@ var pollUpdate;
 
 					var _this = this;
 					var stateId = $(this).attr("data-stateId");
+					var stateIndex = Util.getIndexByState(voteType, stateId);
 					var blockMask = mapData[stateId].mask;
 					var block = mapData[stateId].back;
 					var condition = block.state;
 					var fillColor = stateColor[block.state][1];
 
-					popTimer = setTimeout(function() {
+					if('undefined' !== typeof stateIndex && stateIndex >= 0) {
+						popTimer = setTimeout(function() {
 
-						block.attr({
-							fill: fillColor
-						});
-						currentBlock = blockMask;
-						popInfo.style.visibility = "visible";
-						popTimer = null;
-						changePop(stateId, stateInfo.state[stateId]);
-						$(this).find("p").addClass("hoverIt");
+							block.attr({
+								fill: fillColor
+							});
+							currentBlock = blockMask;
+							popInfo.style.visibility = "visible";
+							popTimer = null;
 
-					}, 200);
+							changePop(stateId, stateInfo[stateIndex]);
+							$(this).find("p").addClass("hoverIt");
+
+						}, 200);
+					}
+					
 
 				});
 
@@ -334,7 +421,7 @@ var pollUpdate;
 					var stateId = $(this).attr("data-stateId");
 					var block = mapData[stateId].back;
 					var fillColor = stateColor[block.state][0];
-
+					
 					clearTimeout(popTimer);
 					block.attr({
 						fill: fillColor
@@ -351,7 +438,7 @@ var pollUpdate;
 
 	// 投票数据的更新函数，通过异步请求来触发
 	pollUpdate = function(datas) {
-
+		
 		updateing = (updateing - 1 < 0) ? 0 : updateing - 1;
 		currentLevel = 1;
 
@@ -359,36 +446,72 @@ var pollUpdate;
 			return;
 		}
 
-		var stateId;
-		var data;
-
 		$("#map_back")[0].style.visibility = "hidden";
 		$("#map_info")[0].style.visibility = "hidden";
-		for(stateId in datas.state) {
 
-			data = datas.state[stateId]
-			changeMapState(stateId, data);
-
-		}
-		$("#map_info")[0].style.visibility = "visible";
-		$("#map_back")[0].style.visibility = "visible";
-
-		if(currentBlock) {
-			changePop(currentBlock.stateId, datas.state[currentBlock.stateId]);
-		}
-		stateInfo = datas;
-
+		// type:0众议院|1参议院|2州长
+		var type = $('.p-mapTab li a').index($('.cur'));
+		voteType = type;
+		triggerByType(type, datas);
+		
 		return;
 	};
 
+	// 根据投票类型改变地图状态
+	// type:0众议院|1参议院|2州长
+	var triggerByType = function(type, datas) {
+		var data;
+		var relation;
+		var baseName = Params.baseName;
+		var voteData = datas.states[type].state; // 选举投票数据
+		if(type === 0) {
+			relation = Params.zyStateId;
+		} else if(type === 1) {	
+			relation = Params.cyStateId;
+		} else {
+			relation = Params.zzStateId;
+		}
+
+		// 众议院：只有参与州的数据，不参与的显示默认值
+		var i = 0, len = relation.length;
+		for(; i < len; i++) {
+			stateId = baseName[relation[i]];
+			data = voteData[i];
+			//console.log('stateId:' + stateId + '; '  + i  +'; data:' +  data);
+			// 参议院多余两条数据
+			if(!(voteType === 1 && (i === 24 || i === 28))) {
+				changeMapState(stateId, data);
+			}
+			
+		}
+
+		$("#map_info")[0].style.visibility = "visible";
+		$("#map_back")[0].style.visibility = "visible";
+
+		stateInfo = voteData;  // 某种选举全部数据
+
+
+		if(currentBlock) {
+			var stateIds;
+			var stateId = currentBlock.stateId;
+			var index = Util.getIndexByState(voteType, stateId);
+			if(index >= 0) {
+				changePop(stateId, stateInfo[index]);
+			}
+		}
+	};
+	
+
 	// 改变地图的状态，地图背景的颜色，州说明的颜色
 	var changeMapState = function(stateId, data) {
-
+			
 			var block = mapData[stateId].back;
+
 			// 当前鼠标所在区块，激活弹出窗口时更新。
 			var currentState = block.state;
-			var state = getState(stateId, data);
-
+			
+			var state = getState(stateId, data); // 获取开票状态
+			//console.log('currentState:' + currentState + '; state:' + state + '; ' + stateColor[state][0] + '; ' + stateId);
 			if(currentState !== state) {
 				block.state = state;
 				block.attr({
@@ -400,26 +523,35 @@ var pollUpdate;
 
 		};
 
-	// 获取当前州的状态
+	// 获取当前州的开票状态
 	var getState = function(stateId, data) {
-
+			var state;
 			switch(data[0]) {
 
+			// 进行中
 			case 2:
-			
-				if(data[3] + data[4] > 0) {
-					return(data[3] >= data[4]) ? "o_lead" : "r_lead";
-				} else {
-					return(data[1] >= data[2]) ? "o_lead" : "r_lead";
+				state = Util.getMaxIndex(data[1], data[2], data[3]);
+				if(state === 0) { // 两派共同领先
+					return "twins_lead";
+				} else if(state === 1) { // 共和党领先
+					return "r_lead";
+				} else if(state === 2) { // 民主党领先
+ 					return "d_lead";
+				} else { // 其他党领先
+					return "o_lead";
 				}
 				break;
 
 			case 3:
-			
-				if(data[3] + data[4] > 0) {
-					return(data[3] >= data[4]) ? "o_win" : "r_win";
-				} else {
-					return(data[1] >= data[2]) ? "o_win" : "r_win";
+				state = Util.getMaxIndex(data[1], data[2], data[3]);
+				if(state === 0) { // 两派共同获胜
+					return "twins_win";
+				} else if(state === 1) { // 共和党获胜
+					return "r_win";
+				} else if(state === 2) { // 民主党获胜
+ 					return "d_win";
+				} else { // 其他党获胜
+					return "o_win";
 				}
 				break;
 
@@ -432,6 +564,11 @@ var pollUpdate;
 
 	// 改变弹出窗口的数据
 	// todo 1026 那个refStateId是否需要这么做，因为这么做，又多了一个状态值，能否用现有状态替代。
+	/**
+	 * [changePop description]
+	 * @param  {String} stateId [州名称]
+	 * @param  {Array}  data    [该州的一条数组数据]
+	 */
 	var changePop = function(stateId, data) {
 
 			if(!currentBlock) {
@@ -449,22 +586,31 @@ var pollUpdate;
 			// 根据当前要显示的州的id跟上一次显示的州的id做比较，来初始化pop窗口的内容。
 			// 如果两个id不一样，即说明这次pop中的数据不是上个州的，需要进行初始化的动画（从0开始的动画）
 			if(refStateId !== stateId) {
-				var blockBaseInfo = baseInfo[stateId];
+				var title = Params.baseNameCN[Params.baseName.indexOf(stateId)];
+				var index = Util.getIndexByState(stateId);
 				$pop.data("refStateId", stateId);
-				$pop.find(".title").text(blockBaseInfo[0]);
-				$pop.find(".poll_count em").text(blockBaseInfo[1]);
+				$pop.find(".title").text(title);
+				$pop.find(".poll_count em").text(Params.zySeats[index]);
+				
 
 				// 如果当前状态为未开始投票，则将百分比请空和投票数设为0
 				// todo 实际情况中是否需要这么做。
 				if(data[0] === 1) {
-					$pop.find(".o_bar").height(0);
+					$pop.find(".d_bar").height(0);
 					$pop.find(".r_bar").height(0);
-					$pop.find(".o_per").text("");
+					$pop.find(".o_bar").height(0);
+					$pop.find(".d_per").text("");
 					$pop.find(".r_per").text("");
-					$pop.find(".o_info em").text("0");
-					$pop.find(".r_info em").text("0");
-					$("#o_win_bar").hide();
+					$pop.find(".o_per").text("");
+					$pop.find(".d_info em").text(0);
+					$pop.find(".r_info em").text(0);
+					$pop.find(".o_info em").text(0);
+					$('.d_sign').height(0);
+					$('.r_sign').height(0);
+					$('.o_sign').height(0);
+					$("#d_win_bar").hide();
 					$("#r_win_bar").hide();
+					$("#o_win_bar").hide();
 				} else {
 					creatAnimPop([1, 0, 0, 0, 0, 0, 0], data);
 				}
@@ -474,14 +620,21 @@ var pollUpdate;
 				// 如果当前状态为未开始投票，则将百分比请空和投票数设为0
 				// todo 实际情况中是否需要这么做。
 				if(data[0] === 1) {
-					$pop.find(".o_per").text("");
+					$pop.find(".d_per").text("");
 					$pop.find(".r_per").text("");
-					$pop.find(".o_info em").text("0");
-					$pop.find(".r_info em").text("0");
-					$("#o_win_bar").hide();
+					$pop.find(".o_per").text("");
+					$pop.find(".d_info em").text(0);
+					$pop.find(".r_info em").text(0);
+					$pop.find(".o_info em").text(0);
+					$('.d_sign').height(0);
+					$('.r_sign').height(0);
+					$('.o_sign').height(0);
+					$("#d_win_bar").hide();
 					$("#r_win_bar").hide();
+					$("#o_win_bar").hide();
 				} else {
-					creatAnimPop(stateInfo.state[stateId], data);
+					var stateIndex = Util.getIndexByState(voteType, stateId);
+					creatAnimPop(stateInfo[stateIndex], data);
 				}
 
 			}
@@ -490,7 +643,6 @@ var pollUpdate;
 
 	// 为创建pop窗口的投票动画，进行数据的准备。
 	var creatAnimPop = function(lastData, currentData) {
-
 			var $pop = $(popInfo);
 			var elmOPre = $pop.find(".o_per")[0];
 			var elmRPre = $pop.find(".r_per")[0];
@@ -498,23 +650,25 @@ var pollUpdate;
 			var elmRBar = $pop.find(".r_bar")[0];
 			var elmOTicket = $pop.find(".o_info em")[0];
 			var elmRTicket = $pop.find(".r_info em")[0];
-			var oBeginTicket = lastData[1];
+			var dBeginTicket = lastData[1];
 			var rBeginTicket = lastData[2];
-			var oEndTicket = currentData[1];
+			var oBeginTicket = lastData[3];
+			var dEndTicket = currentData[1];
 			var rEndTicket = currentData[2];
+			var oEndTicket = currentData[3];
 
 			// 由于有人工干预，投票百分比的计算有点麻烦
-			var oBeginPre;
+			var dBeginPre;
 			if(lastData[3] !== 0 && lastData[4] !== 0) {
-				oBeginPre = lastData[3];
+				dBeginPre = lastData[3];
 			} else {
 
 				// 无票的判断
-				if((rBeginTicket + oBeginTicket) <= 0) {
-					oBeginPre = 0;
+				if((rBeginTicket + dBeginTicket) <= 0) {
+					dBeginPre = 0;
 				} else {
 					// 获取小数点后一位的数字
-					oBeginPre = (((oBeginTicket / (rBeginTicket + oBeginTicket)) * 100).toFixed(1)) / 1;
+					dBeginPre = (((dBeginTicket / (rBeginTicket + dBeginTicket)) * 100).toFixed(1)) / 1;
 				}
 
 			}
@@ -524,57 +678,68 @@ var pollUpdate;
 				rBeginPre = lastData[4];
 			} else {
 
-				if((rBeginTicket + oBeginTicket) <= 0) {
+				if((rBeginTicket + dBeginTicket) <= 0) {
 					rBeginPre = 0;
 				} else {
-					rBeginPre = 100 - oBeginPre;
+					rBeginPre = 100 - dBeginPre;
 				}
 
 			}
 
-			var oEndPre;
-			if(currentData[3] !== 0 && currentData[4] !== 0) {
-				oEndPre = currentData[3];
+			var oBeginPre = lastData[3];
+
+			var dEndPre = currentData[2];
+			/*if(currentData[3] !== 0 && currentData[4] !== 0) {
+				dEndPre = currentData[3];
 			} else {
 
-				if((oEndTicket + rEndTicket) <= 0) {
-					oEndPre = 0;
+				if((dEndTicket + rEndTicket) <= 0) {
+					dEndPre = 0;
 				} else {
-					oEndPre = (((oEndTicket / (oEndTicket + rEndTicket)) * 100).toFixed(1)) / 1;
+					dEndPre = (((dEndTicket / (dEndTicket + rEndTicket)) * 100).toFixed(1)) / 1;
 				}
 
-			}
+			}*/
 
-			var rEndPre;
-			if(currentData[3] !== 0 && currentData[4] !== 0) {
+			var rEndPre = currentData[1];
+
+			/*if(currentData[3] !== 0 && currentData[4] !== 0) {
 				rEndPre = currentData[4];
 			} else {
 
-				if((oEndTicket + rEndTicket) <= 0) {
+				if((dEndTicket + rEndTicket) <= 0) {
 					rEndPre = 0;
 				} else {
-					rEndPre = 100 - oEndPre;
+					rEndPre = 100 - dEndPre;
 				}
 
-			}
+			}*/
+
+			var oEndPre = currentData[3];
 
 			clearTimeout(animPopProTime);
-			animPopPro([oBeginTicket, oEndTicket, oBeginPre, oEndPre, lastData[0]], [rBeginTicket, rEndTicket, rBeginPre, rEndPre, currentData[0]], animPopCount);
+			// dBeginTicket:开始票数
+			// dEndTicket:  结束票数
+			// dBeginPre: 	开始百分比
+			// dEndPre: 	结束百分比
+			animPopPro([dBeginTicket, dEndTicket, dBeginPre, dEndPre, lastData[0]], [rBeginTicket, rEndTicket, rBeginPre, rEndPre, currentData[0]], [oBeginTicket, oEndTicket, oBeginPre, oEndPre, currentData[0]], animPopCount);
 
 		};
 
 	// @angelia:创建pop窗口的投票动画
-	var animPopPro = function(oDatas, rDatas, count) {
+	var animPopPro = function(dDatas, rDatas, oDatas, count) {
 
 		var a = [];
-		if(oDatas[2] === oDatas[3] || count === 0) {
+		var ratio = 8;
+		
+		if(dDatas[2] === dDatas[3] || count === 0) {
 			
 			var rWinBar = "";
 			var oWinBar = "";
 			var sFixTop = 'style="top: 167px;"';
 			
-			if(oDatas[3]*1.2 - 57 > 0) {
-				sFixTop = 'style="top: '+ (167 - (oDatas[3]*1.2 - 57)/2) +'px;"';
+			if(dDatas[3]*1.2 - 57 > 0) {
+				sFixTop = 'style="top: '+ (167 - (dDatas[3]*1.2 - 57)/2) +'px;"';
 			}
 
 			if(rDatas[3]*1.2 - 57 > 0) {
@@ -583,55 +748,53 @@ var pollUpdate;
 
 
 	        if(rDatas[4] === 3) {
-
-	        	if(oDatas[3] > rDatas[3]) {
-	        		oWinBar = '<div id="o_win_bar" '+ sFixTop +'></div>';
+	        	// 加上win标志
+	        	if(dDatas[3] > rDatas[3]) {
+	        		oWinBar = '<div id="d_win_bar" '+ sFixTop +'></div>';
 	        	} else {
 	        		rWinBar = '<div id="r_win_bar" '+ sFixTop +'></div>';
 	        	}
 
-	        }	        
-	        a.push('<div class="o_bar" style="height: '+ oDatas[3]*1.2 +'px"><div class="o_per">'+ oDatas[3].toFixed(1) +'%</div></div><div class="o_sign"></div><div class="o_info">奥巴马<br/><em>'+ formatDot(oDatas[1]) +'</em>票</div>' + oWinBar);
-	        a.push('<div class="r_bar" style="height: '+ rDatas[3]*1.2 +'px"><div class="r_per">'+ rDatas[3].toFixed(1) +'%</div></div><div class="r_sign"></div><div class="r_info">罗姆尼<br/><em>'+ formatDot(rDatas[1]) +'</em>票</div>' + rWinBar);
+	        }	
+
+	        a.push('<div class="d_bar" style="height: '+ dDatas[3]*ratio +'px"><div class="d_per">'+ dDatas[3].toFixed(0) +'</div></div><div class="d_sign"></div><div class="d_info">民主党(D)<br/><em>'+ Util.formatDot(dDatas[1]) +'</em>票</div>' + oWinBar);
+	        a.push('<div class="r_bar" style="height: '+ rDatas[3]*ratio +'px"><div class="r_per">'+ rDatas[3].toFixed(0) +'</div></div><div class="r_sign"></div><div class="r_info">共和党(R)<br/><em>'+ Util.formatDot(rDatas[1]) +'</em>票</div>' + rWinBar);
+	        a.push('<div class="o_bar" style="height: '+ oDatas[3]*ratio +'px"><div class="o_per">'+ oDatas[3].toFixed(0) +'</div></div><div class="o_sign"></div><div class="o_info">其它(O)<br/><em>'+ Util.formatDot(rDatas[1]) +'</em>票</div>' + rWinBar);
+
+	        //a.push('<div class="d_bar" style="height: '+ oDatas[3]*1.2 +'px"><div class="d_per">'+ dDatas[3].toFixed(1) +'%</div></div><div class="d_sign"></div><div class="d_info">民主党(D)<br/><em>'+ Util.formatDot(dDatas[1]) +'</em>票</div>' + oWinBar);
+	        //a.push('<div class="r_bar" style="height: '+ rDatas[3]*1.2 +'px"><div class="r_per">'+ rDatas[3].toFixed(1) +'%</div></div><div class="r_sign"></div><div class="r_info">共和党(R)<br/><em>'+ Util.formatDot(rDatas[1]) +'</em>票</div>' + rWinBar);
+	        
 	        document.getElementById("js_bar_box").innerHTML = a.join("");
 
 		} else {
-			oDifPre = (((oDatas[3] - oDatas[2]) / count).toFixed(1)) / 1;
-			oDatas[2] = oDatas[2] + oDifPre;
-			oDifTicket = Math.floor((oDatas[1] - oDatas[0]) / count);
-			oDatas[0] = oDatas[0] + oDifTicket;
+			oDifPre = (((dDatas[3] - dDatas[2]) / count).toFixed(1)) / 1;
+			dDatas[2] = dDatas[2] + oDifPre;
+			oDifTicket = Math.floor((dDatas[1] - dDatas[0]) / count);
+			dDatas[0] = dDatas[0] + oDifTicket;
 
 			rDifPre = (((rDatas[3] - rDatas[2]) / count).toFixed(1)) / 1;
 			rDatas[2] = rDatas[2] + rDifPre;
 			rDifTicket = Math.floor((rDatas[1] - rDatas[0]) / count);
 			rDatas[0] = rDatas[0] + rDifTicket;
 
-	        a.push('<div class="o_bar" style="height: '+ oDatas[2]*1.2 +'px"><div class="o_per">'+ oDatas[2].toFixed(1) +'%</div></div><div class="o_sign"></div><div class="o_info">奥巴马<br/><em>'+ formatDot(oDatas[0]) +'</em>票</div>');
-	        a.push('<div class="r_bar" style="height: '+ rDatas[2]*1.2 +'px"><div class="r_per">'+ rDatas[2].toFixed(1) +'%</div></div><div class="r_sign"></div><div class="r_info">罗姆尼<br/><em>'+ formatDot(rDatas[0]) +'</em>票</div>');
+	        a.push('<div class="d_bar" style="height: '+ dDatas[2]*ratio +'px"><div class="d_per">'+ dDatas[2].toFixed(0) +'</div></div><div class="d_sign"></div><div class="d_info">民主党(D)<br/><em>'+ Util.formatDot(dDatas[0]) +'</em>票</div>');
+	        a.push('<div class="r_bar" style="height: '+ rDatas[2]*ratio +'px"><div class="r_per">'+ rDatas[2].toFixed(0) +'</div></div><div class="r_sign"></div><div class="r_info">共和党(R)<br/><em>'+ Util.formatDot(rDatas[0]) +'</em>票</div>');
+	        a.push('<div class="o_bar" style="height: '+ rDatas[2]*ratio +'px"><div class="o_per">'+ rDatas[2].toFixed(0) +'</div></div><div class="o_sign"></div><div class="o_info">其它(O)<br/><em>'+ Util.formatDot(rDatas[0]) +'</em>票</div>');
 	        document.getElementById("js_bar_box").innerHTML = a.join("");
 
 			animPopProTime = setTimeout(function() {
-				animPopPro(oDatas, rDatas, count - 1);
+				animPopPro(dDatas, rDatas, oDatas, count - 1);
 			}, animPopTime);
 
 		}
 
 	};
 
-
-	// 格式化数字中的逗号
-	var formatDot = function(iNumber) {
-
-			var s = iNumber + "";
-			return s.replace(/(?=(?!\b)(?:\d{3})+(?!\d))/g, ',');
-
-		};
-
 	// 卸载所有的事件，为了修复ie6下面刷新页面
 	var removeall = function() {
 
 			for(var stateId in mapData) {
-				// console.log('stateId:' + stateId);
+				
 				mapData[stateId].mask.unmouseover(pOver);
 				mapData[stateId].mask.unmouseout(pOut);
 				mapData[stateId].mask = null;
@@ -647,9 +810,6 @@ var pollUpdate;
 			$("#map_main").html("");
 
 		};
-
-	// @angelia-start 每次unload时移除所有事件：IE6下bug
-	window.onunload = removeall;
 
 	// 获取当前鼠标位置
 	// @angelia 设置蒙版的位置
@@ -722,22 +882,33 @@ var pollUpdate;
 
 		};
 
-	// @angelia 
-	// 注册全局事件
-	if(!isMobile) {
-		$(wrapper).on("mousemove", getMouseXY);
-	}
+	// 初始化
+	var init = function() {
+		
+		// @angelia-start 每次unload时移除所有事件：IE6下bug
+		window.onunload = removeall;
 
-	// 监控window的scroll 和 resize事件，来改变限制pop窗口的4个边界。
-	$(window).scroll(updateWinPosition);
-	$(window).resize(updateWinPosition);
+		// 注册全局事件
+		if(!isMobile) {
+			$(wrapper).on("mousemove", getMouseXY);
+		}
 
-	// @angelia 画地图
-	initMap();
+		// 监控window的scroll 和 resize事件，来改变限制pop窗口的4个边界。
+		$(window).scroll(updateWinPosition);
+		$(window).resize(updateWinPosition);
 
+		// 画地图
+		initMap();
+
+
+	};
+
+	init();
+ 
+	
 
 	// 异步请求的循环
-	// 最大级别，如果请求一直不响应，每3秒增加一个级别，达到最大级别则强制刷新。
+	// 最大级别，如果请求一直不响应，每3秒增加一个级别，达到最大级别则强制刷新
 	var maxLevel = usaMaxLevel || 20;
 	var currentLevel = 1;
 	var updateUrl = usaUpdateUrl || "http://news.ifeng.com/usa2012/data/state.js";
